@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+//@CrossOrigin
 @RequestMapping("/account")
 public class AuthController {
 
@@ -21,6 +22,7 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<RegistrationResponse> signUp(@RequestBody @Valid RegistrationRequest registrationRequest) {
+        System.out.println("=============== SignUp ================");
         return ResponseEntity.ok(authService.signUp(registrationRequest));
     }
 
