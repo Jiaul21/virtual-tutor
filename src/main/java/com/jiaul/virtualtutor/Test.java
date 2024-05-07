@@ -1,24 +1,54 @@
 package com.jiaul.virtualtutor;
 
+import com.jiaul.virtualtutor.test.*;
 import jakarta.validation.constraints.*;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class Test {
 
     public static void c(){
         System.out.println((char)34);
     }
+
     public static void main(String[] args) {
 
+//        Controller controller=new Controller();
+//        controller.call();
 
+        List<String> l ;
+
+//        l=List.of("hello");
+//        l.add("hello");
+//        l.add("hi");
+        List<String> l1=List.of("hello");
+        l=l1;
+
+
+        System.out.println(l1);
+        System.out.println(l);
+        List<String> l2=List.of("hello");
+        l.add("jj");
+
+        System.out.println(l);
+
+
+
+
+
+
+        /*
         String type[]={"Skills","Academic"};
         String topic[][]={
                 {"Java","Java Script","Html","CSS","React","Spring","Spring Boot","MySQL"},
                 {"Math","Physics","Chemistry","Biology","English","Bangla","ICT"}
         };
         int id=0,rand=0;
-
-
 
         int itemFoEachTopic=10;
         for(int t=0;t< type.length;t++){
@@ -44,7 +74,7 @@ public class Test {
                     );
                 }
             }
-        }
+        }*/
     }
 
 

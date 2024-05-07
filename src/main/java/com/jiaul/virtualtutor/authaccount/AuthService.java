@@ -1,86 +1,98 @@
 package com.jiaul.virtualtutor.authaccount;
 
-import com.jiaul.virtualtutor.authconfig.JwtService;
-import com.jiaul.virtualtutor.response.AuthResponse;
-import com.jiaul.virtualtutor.response.HttpResponse;
-import com.jiaul.virtualtutor.user.OurUser;
-import com.jiaul.virtualtutor.user.OurUserRepository;
+import com.jiaul.virtualtutor.authaccount.dto.AuthResponse;
+import com.jiaul.virtualtutor.authaccount.dto.LoginRequest;
+import com.jiaul.virtualtutor.authaccount.dto.RegistrationRequest;
+import com.jiaul.virtualtutor.authconfig.entity.JwtToken;
+import com.jiaul.virtualtutor.authconfig.entity.JwtTokenService;
+import com.jiaul.virtualtutor.entities.userprofile.UserProfile;
+import com.jiaul.virtualtutor.entities.userprofile.UserProfileService;
+import com.jiaul.virtualtutor.user.UserCredential;
+import com.jiaul.virtualtutor.user.UserCredentialService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
+import java.util.List;
 
 @Service
 public class AuthService {
 
     @Autowired
-    private OurUserRepository ourUserRepository;
+    private UserCredentialService userCredentialService;
     @Autowired
-    private JwtService jwtService;
+    private UserProfileService userProfileService;
+    @Autowired
+    private JwtTokenService jwtTokenService;
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
     private AuthenticationManager authenticationManager;
-    @Autowired
-    private AuthenticationProvider authenticationProvider;
 
-    public LoginResponse logIn(LoginRequest loginRequest) {
-        LoginResponse loginResponse = new LoginResponse();
+    public AuthResponse logIn(LoginRequest loginRequest) {
+        AuthResponse authResponse = new AuthResponse();
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
-            var user = ourUserRepository.findByEmail(loginRequest.getEmail()).orElseThrow();
 
-            loginResponse.setName(user.getName());
-            loginResponse.setEmail(user.getEmail());
-            loginResponse.setRole(user.getRole());
-            loginResponse.setAuthResponse(new AuthResponse(jwtService.generateToken(user),
-                    jwtService.generateRefreshToken(new HashMap<>(), user), jwtService.getExpirationTime()));
-            loginResponse.setHttpResponse(new HttpResponse("200","non","LogIn Successfully"));
-        } catch (Exception e) {
-            loginResponse.setHttpResponse(new HttpResponse("401",e.getMessage(),"Bad Credential ! Try Right User & Password"));
-        }
-        return loginResponse;
-    }
-
-    public RegistrationResponse signUp(RegistrationRequest registrationRequest) {
-        RegistrationResponse registrationResponse=new RegistrationResponse();
-        try {
-            OurUser ourUser = new OurUser();
-            ourUser.setName(registrationRequest.getName());
-            ourUser.setEmail(registrationRequest.getEmail());
-            ourUser.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
-            ourUser.setRole(registrationRequest.getRole());
-            ourUser.setAccountNonExpired(true);
-            ourUser.setAccountNonLocked(true);
-            ourUser.setCredentialsNonExpired(true);
-            ourUser.setEnabled(true);
-
-            System.out.println("ourUser: "+ourUser);
-
-            var user = ourUserRepository.save(ourUser);
-            System.out.println("user: "+user);
-            if (user != null && user.getId() > 0) {
-                registrationResponse.setHttpResponse(new HttpResponse("201","non","SignUp Successfully"));
-                try{
-//                    authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
-                    registrationResponse.setName(user.getName());
-                    registrationResponse.setEmail(user.getEmail());
-                    registrationResponse.setRole(user.getRole());
-                    registrationResponse.setAuthResponse(new AuthResponse(jwtService.generateToken(user),
-                            jwtService.generateRefreshToken(new HashMap<>(), user), jwtService.getExpirationTime()));
-                    registrationResponse.setHttpResponse(new HttpResponse("201","non","SignUp & LogIn Successfully"));
-                }catch (Exception e){
-                    registrationResponse.setHttpResponse(new HttpResponse("500",e.getMessage(),"Login Failed"));
-                }
+            UserProfile userProfile = userCredentialService.getUserCredentialByEmail(loginRequest.getEmail()).getUserProfile();
+            JwtToken newToken = jwtTokenService.createJwtTokenByUserProfile(userProfile);
+            JwtToken token = jwtTokenService.saveToken(newToken);
+            if (token != null) {
+                String message = "User Login Successfully";
+                authResponse = makeAuthResponse(userProfile, token, message);
             }
         } catch (Exception e) {
-            registrationResponse.setHttpResponse(new HttpResponse("500",e.getMessage(),"SignUp Failed"));
+            authResponse.setMessage("Bad Credential ! Try Right User & Password. " + e.getMessage());
         }
-        return registrationResponse;
+        return authResponse;
+    }
+
+    public AuthResponse signUp(RegistrationRequest registrationRequest) {
+        AuthResponse authResponse = new AuthResponse();
+
+        UserProfile userProfile = new UserProfile();
+        userProfile.setName(registrationRequest.getName());
+
+        UserCredential userCredential = new UserCredential();
+        userCredential.setEmail(registrationRequest.getEmail());
+        userCredential.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
+        userCredential.setRole(registrationRequest.getRole());
+        userCredential.setAccountNonExpired(true);
+        userCredential.setAccountNonLocked(true);
+        userCredential.setCredentialsNonExpired(true);
+        userCredential.setEnabled(true);
+        userCredential.setUserProfile(userProfile);
+
+        try {
+            userProfile.setUserCredential(userCredential);
+            JwtToken newToken = jwtTokenService.createJwtTokenByUserProfile(userProfile);
+            userProfile.setJwtTokens(List.of(newToken));
+
+            UserProfile userProfile1 = userProfileService.createUserProfile(userProfile);
+            if (userProfile1 != null) {
+                String message = "User account Created & Login Successfully";
+                authResponse = makeAuthResponse(userProfile1, newToken, message);
+            }
+        } catch (Exception e) {
+            authResponse.setMessage("Internal Server Error. " + e.getMessage());
+        }
+        return authResponse;
+    }
+
+    public AuthResponse makeAuthResponse(UserProfile userProfile, JwtToken token, String message) {
+        AuthResponse authResponse = new AuthResponse();
+        authResponse.setId(userProfile.getId());
+        authResponse.setName(userProfile.getName());
+        authResponse.setEmail(userProfile.getUserCredential().getEmail());
+        authResponse.setRole(userProfile.getUserCredential().getRole());
+        authResponse.setPhoto(userProfile.getPhoto());
+        authResponse.setMessage(message);
+        authResponse.setJwtToken(token.getToken());
+        authResponse.setJwtTokenType(token.getTokenType());
+        return authResponse;
     }
 
 

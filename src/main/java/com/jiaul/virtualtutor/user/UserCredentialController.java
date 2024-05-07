@@ -8,23 +8,22 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/our-user")
-public class OurUserController {
+public class UserCredentialController {
 
     @Autowired
-    OurUserDetailsService ourUserDetailsService;
+    UserCredentialService userCredentialService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<OurUser>> getUser(@PathVariable int id) throws UserNotFoundExcepthon {
-        return ResponseEntity.ok(ourUserDetailsService.getUser(id));
+    public ResponseEntity<Optional<UserCredential>> getUser(@PathVariable int id) throws UserNotFoundExcepthon {
+        return ResponseEntity.ok(userCredentialService.getUser(id));
     }
 
     @GetMapping("/all")
-    public ResponseEntity<Optional<OurUser>> getAllUser(){
-        return  ResponseEntity.ok(ourUserDetailsService.getAllUser().getBody());
+    public ResponseEntity<Optional<UserCredential>> getAllUser(){
+        return  ResponseEntity.ok(userCredentialService.getAllUser().getBody());
     }
 }

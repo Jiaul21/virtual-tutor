@@ -1,6 +1,6 @@
 package com.jiaul.virtualtutor.authconfig;
 
-import com.jiaul.virtualtutor.user.OurUserDetailsService;
+import com.jiaul.virtualtutor.user.UserCredentialService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +21,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Configuration
@@ -29,7 +28,7 @@ import java.util.List;
 public class SecurityConfig {
 
     @Autowired
-    private OurUserDetailsService ourUserDetailsService;
+    private UserCredentialService userCredentialService;
 
     @Autowired
     private JwtAuthFilter jwtAuthFilter;
@@ -76,7 +75,7 @@ public class SecurityConfig {
     public AuthenticationProvider authenticationProvider() {
         System.out.println("///////// authenticationProvider /////////");
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setUserDetailsService(ourUserDetailsService);
+        daoAuthenticationProvider.setUserDetailsService(userCredentialService);
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
         return daoAuthenticationProvider;
     }
@@ -84,7 +83,7 @@ public class SecurityConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         System.out.println("///////// userDetailsService /////////");
-        return ourUserDetailsService;
+        return userCredentialService;
     }
 
     @Bean
