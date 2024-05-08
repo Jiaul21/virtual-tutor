@@ -5,10 +5,11 @@ import jakarta.validation.constraints.*;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Array;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.sql.Time;
+import java.util.*;
 
 public class Test {
 
@@ -16,26 +17,9 @@ public class Test {
         System.out.println((char)34);
     }
 
-    public static void main(String[] args) {
-
-//        Controller controller=new Controller();
-//        controller.call();
-
-        List<String> l ;
-
-//        l=List.of("hello");
-//        l.add("hello");
-//        l.add("hi");
-        List<String> l1=List.of("hello");
-        l=l1;
+    public static void main(String[] args) throws IOException {
 
 
-        System.out.println(l1);
-        System.out.println(l);
-        List<String> l2=List.of("hello");
-        l.add("jj");
-
-        System.out.println(l);
 
 
 

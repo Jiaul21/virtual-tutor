@@ -14,21 +14,14 @@ public class ShopService {
 
     public Shop saveShop(Shop shop) {
         System.out.println(shop);
-//        List<Product> productList = shop.getProduct();
-//        shop.setProduct(null);
-//        System.out.println(shop);
-//        productList.forEach(product -> {
-//            System.out.println("*******************");
-//            product.setShop(shop);
-//            System.out.println(product);
-//        });
-//        System.out.println("@@@@@@@@@@");
-//        shop.setProduct(productList);
-//        System.out.println("@@@@@@@@@@");
-//        System.out.println(productList);
+        List<Product> productList = shop.getProduct();
 
+        productList.forEach(product -> {
+            product.setShop(shop);
+        });
+        shop.setProduct(productList);
 
-//        System.out.println(shop);
+        System.out.println(shop);
         return shopRepo.save(shop);
     }
 
