@@ -1,6 +1,6 @@
 package com.jiaul.virtualtutor.user;
 
-import com.jiaul.virtualtutor.customexception.UserNotFoundExcepthon;
+import com.jiaul.virtualtutor.customexception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +18,7 @@ public class UserCredentialController {
     UserCredentialService userCredentialService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<UserCredential>> getUser(@PathVariable int id) throws UserNotFoundExcepthon {
+    public ResponseEntity<Optional<UserCredential>> getUser(@PathVariable int id) throws UserNotFoundException {
         return ResponseEntity.ok(userCredentialService.getUser(id));
     }
 

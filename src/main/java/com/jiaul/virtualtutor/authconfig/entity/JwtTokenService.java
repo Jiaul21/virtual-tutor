@@ -1,7 +1,7 @@
 package com.jiaul.virtualtutor.authconfig.entity;
 
 import com.jiaul.virtualtutor.authconfig.JwtService;
-import com.jiaul.virtualtutor.entities.userprofile.UserProfile;
+import com.jiaul.virtualtutor.user.UserCredential;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,14 +17,19 @@ public class JwtTokenService {
         return jwtTokenRepository.save(jwtToken);
     }
 
-    public JwtToken createJwtTokenByUserProfile(UserProfile userProfile) {
+    public JwtToken createJwtTokenByUserCredential(UserCredential userCredential){
         JwtToken jwtToken = new JwtToken();
-        jwtToken.setToken(jwtService.generateToken(userProfile.getUserCredential()));
+        jwtToken.setTokenValue(jwtService.generateToken(userCredential));
 //        jwtService.generateRefreshToken(new HashMap<>(), ourUser);
         jwtToken.setTokenType("Bearer ");
         jwtToken.setExpired(false);
         jwtToken.setRevoked(false);
-        jwtToken.setUserProfile(userProfile);
+        jwtToken.setUserCredential(userCredential);
         return jwtToken;
+    }
+
+    public JwtToken updateTokenValueByUserCredential(UserCredential userCredential){
+        userCredential.getJwtToken().setTokenValue(jwtService.generateToken(userCredential));
+        return jwtTokenRepository.save(userCredential.getJwtToken());
     }
 }

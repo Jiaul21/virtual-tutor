@@ -1,6 +1,6 @@
 package com.jiaul.virtualtutor.user;
 
-import com.jiaul.virtualtutor.customexception.UserNotFoundExcepthon;
+import com.jiaul.virtualtutor.customexception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,6 +17,7 @@ public class UserCredentialService implements UserDetailsService {
     UserCredentialRepository userCredentialRepository;
 
     public UserCredential createUserCredential(UserCredential userCredential){
+        System.out.println("-------------------------------------- 1 --------------------");
         return userCredentialRepository.save(userCredential);
     }
 
@@ -29,10 +30,10 @@ public class UserCredentialService implements UserDetailsService {
         return userCredentialRepository.findByEmail(email).orElseThrow();
     }
 
-    public Optional<UserCredential> getUser(int id) throws UserNotFoundExcepthon {
+    public Optional<UserCredential> getUser(int id) throws UserNotFoundException {
         Optional<UserCredential> ourUser= userCredentialRepository.findById(id);
         if(ourUser==null){
-            throw new UserNotFoundExcepthon("User Not Found "+id);
+            throw new UserNotFoundException("User Not Found "+id);
         }
         return ourUser;
     }

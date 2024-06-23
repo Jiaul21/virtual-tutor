@@ -1,7 +1,7 @@
 package com.jiaul.virtualtutor.entities.course;
 
 import com.jiaul.virtualtutor.entities.course.dto.CourseRequest;
-import com.jiaul.virtualtutor.entities.userprofile.UserProfile;
+
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -43,8 +43,8 @@ public class CourseController {
     public ResponseEntity<List<Course>> getCourseByCategory(@PathVariable String category) {
         return ResponseEntity.ok(courseService.getCourseByCategory(category));
     }
-    @GetMapping("/{instructor}")
-    public ResponseEntity<List<Course>> getCourseByInstructor(@PathVariable UserProfile instructor) {
-        return ResponseEntity.ok(courseService.getCourseByInstructor(instructor));
-    }
+//    @GetMapping("/{instructor}")
+//    public ResponseEntity<List<Course>> getCourseByInstructor(@PathVariable UserProfile instructor) {
+//        return ResponseEntity.ok(courseService.getCourseByInstructor(instructor));
+//    }
 }

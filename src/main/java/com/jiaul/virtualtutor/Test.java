@@ -1,15 +1,8 @@
 package com.jiaul.virtualtutor;
 
-import com.jiaul.virtualtutor.test.*;
-import jakarta.validation.constraints.*;
-import lombok.Data;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.jiaul.virtualtutor.enums.RoleEnum;
 
-import java.io.File;
 import java.io.IOException;
-import java.sql.Array;
-import java.sql.Time;
-import java.util.*;
 
 public class Test {
 
@@ -18,6 +11,14 @@ public class Test {
     }
 
     public static void main(String[] args) throws IOException {
+
+        String r="TEACHER";
+        System.out.println(RoleEnum.TEACHER);
+        System.out.println(RoleEnum.TEACHER.getClass());
+
+        if(r.equals(RoleEnum.TEACHER.toString())){
+            System.out.println(RoleEnum.TEACHER);
+        }
 
 
 

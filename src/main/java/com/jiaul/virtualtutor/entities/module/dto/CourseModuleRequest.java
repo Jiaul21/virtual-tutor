@@ -1,6 +1,5 @@
 package com.jiaul.virtualtutor.entities.module.dto;
 
-import com.jiaul.virtualtutor.entities.content.dto.ContentRequest;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -28,8 +27,4 @@ public class CourseModuleRequest {
     @NotNull
     @NotBlank
     private  int courseId;
-
-    @NotNull
-    @NotBlank
-    private ContentRequest contentRequest;
 }

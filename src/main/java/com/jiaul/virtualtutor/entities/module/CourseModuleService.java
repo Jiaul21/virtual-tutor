@@ -1,7 +1,6 @@
 package com.jiaul.virtualtutor.entities.module;
 
-import com.jiaul.virtualtutor.entities.content.Content;
-import com.jiaul.virtualtutor.entities.content.ContentService;
+
 import com.jiaul.virtualtutor.entities.course.CourseService;
 import com.jiaul.virtualtutor.entities.module.dto.CourseModuleRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +13,10 @@ public class CourseModuleService {
     private CourseModuleRepository courseModuleRepository;
     @Autowired
     private CourseService courseService;
-    @Autowired
-    private ContentService contentService;
+//    @Autowired
+//    private ContentService contentService;
 
     public CourseModule addCourseModule(CourseModule courseModule) {
-        Content content=courseModule.getContent();
-        content.setCourseModule(courseModule);
-        courseModule.setContent(content);
         return courseModuleRepository.save(courseModule);
     }
 

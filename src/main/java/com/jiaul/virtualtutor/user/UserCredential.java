@@ -2,7 +2,10 @@ package com.jiaul.virtualtutor.user;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import com.jiaul.virtualtutor.entities.userprofile.UserProfile;
+import com.jiaul.virtualtutor.authconfig.entity.JwtToken;
+import com.jiaul.virtualtutor.entities.admin.Admin;
+import com.jiaul.virtualtutor.entities.student.Student;
+import com.jiaul.virtualtutor.entities.teacher.Teacher;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
@@ -10,6 +13,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -23,13 +27,23 @@ public class UserCredential implements UserDetails {
     private String email;
     private String password;
     private String role;
+    private Date registrationDate;
     private boolean accountNonExpired;
     private boolean accountNonLocked;
     private boolean credentialsNonExpired;
     private boolean enabled;
 
-    @OneToOne
-    private UserProfile userProfile;
+    @OneToOne(cascade = CascadeType.ALL)
+    private Admin admin;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private Student student;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private Teacher teacher;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private JwtToken jwtToken;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

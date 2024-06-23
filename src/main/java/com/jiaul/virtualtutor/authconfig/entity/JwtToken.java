@@ -2,7 +2,7 @@ package com.jiaul.virtualtutor.authconfig.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import com.jiaul.virtualtutor.entities.userprofile.UserProfile;
+import com.jiaul.virtualtutor.user.UserCredential;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -14,12 +14,11 @@ public class JwtToken {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String token;
+    private String tokenValue;
     private String tokenType;
     private boolean isExpired;
     private boolean isRevoked;
 
-    @ManyToOne
-    @JoinColumn(name = "user_profile_id")
-    private UserProfile userProfile;
+    @OneToOne
+    private UserCredential userCredential;
 }
