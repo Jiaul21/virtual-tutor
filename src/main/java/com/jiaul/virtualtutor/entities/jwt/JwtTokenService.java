@@ -1,4 +1,4 @@
-package com.jiaul.virtualtutor.authconfig.entity;
+package com.jiaul.virtualtutor.entities.jwt;
 
 import com.jiaul.virtualtutor.authconfig.JwtService;
 import com.jiaul.virtualtutor.user.UserCredential;

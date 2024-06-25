@@ -2,7 +2,8 @@ package com.jiaul.virtualtutor.entities.module;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import com.jiaul.virtualtutor.entities.assignment.Assignment;
+import com.jiaul.virtualtutor.entities.assessment.assignment.Assignment;
+import com.jiaul.virtualtutor.entities.assessment.mcqtest.McqTest;
 import com.jiaul.virtualtutor.entities.course.Course;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -34,4 +35,7 @@ public class CourseModule {
 
     @OneToMany(mappedBy = "courseModule", cascade = CascadeType.ALL)
     private List<Assignment> assignments;
+
+    @OneToOne
+    private McqTest mcqTest;
 }

@@ -2,7 +2,7 @@ package com.jiaul.virtualtutor.user;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import com.jiaul.virtualtutor.authconfig.entity.JwtToken;
+import com.jiaul.virtualtutor.entities.jwt.JwtToken;
 import com.jiaul.virtualtutor.entities.admin.Admin;
 import com.jiaul.virtualtutor.entities.student.Student;
 import com.jiaul.virtualtutor.entities.teacher.Teacher;

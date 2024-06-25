@@ -1,4 +1,4 @@
-package com.jiaul.virtualtutor.authconfig.entity;
+package com.jiaul.virtualtutor.entities.jwt;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
