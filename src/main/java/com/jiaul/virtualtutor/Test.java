@@ -12,13 +12,8 @@ public class Test {
 
     public static void main(String[] args) throws IOException {
 
-        String r="TEACHER";
-        System.out.println(RoleEnum.TEACHER);
-        System.out.println(RoleEnum.TEACHER.getClass());
 
-        if(r.equals(RoleEnum.TEACHER.toString())){
-            System.out.println(RoleEnum.TEACHER);
-        }
+        Test test= new Test();
 
 
 
