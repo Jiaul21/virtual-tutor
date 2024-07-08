@@ -22,7 +22,6 @@ public class CourseModule {
     private String name;
     private String topics;  // specific topic
     private String thumbnail;
-    private String duration;    // 8 weeks or 10 hours
     private String contentType; // video or pdf
     private String contentName;
     private String contentSource;

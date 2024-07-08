@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -17,8 +18,8 @@ public class CourseController {
     private CourseService courseService;
 
     @PostMapping("/create")
-    public ResponseEntity<Course> createCourse(@RequestBody Course course) {
-        return ResponseEntity.ok(courseService.createCourse(course));
+    public ResponseEntity<Course> createCourse(@RequestBody CourseRequest courseRequest) throws IOException {
+        return ResponseEntity.ok(courseService.createCourse(courseRequest));
     }
 
     @GetMapping("/buy/{sid}/{cid}")

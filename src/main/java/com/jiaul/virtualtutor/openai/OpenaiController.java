@@ -11,7 +11,8 @@ public class OpenaiController {
     private OpenaiService openaiService;
 
     @PostMapping("/question")
-    public String getAns(@RequestBody String prompt){
+    public String getAns(){
+        String prompt="Call api";
         System.out.println(prompt);
         return openaiService.getChat(prompt);
     }

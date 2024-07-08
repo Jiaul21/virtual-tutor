@@ -23,6 +23,7 @@ public class Course {
     private String image;
     private String type;        // ongoing or ready
     private String category;    // academic or skills
+    private String duration;    // 8 weeks or 10 hours
     private String description;
     private float rating;
     private float price;

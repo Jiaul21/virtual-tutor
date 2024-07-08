@@ -1,38 +1,34 @@
 package com.jiaul.virtualtutor.entities.course.dto;
 
 import com.jiaul.virtualtutor.entities.module.dto.CourseModuleRequest;
+import com.jiaul.virtualtutor.entities.teacher.Teacher;
+import com.jiaul.virtualtutor.enums.CourseCategory;
+import com.jiaul.virtualtutor.enums.CourseType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Date;
+import java.util.List;
 
 @Data
 public class CourseRequest {
 
-    @NotNull
-    @NotBlank
     private int id;
     @NotNull
     @NotBlank
     private String title;
-    @NotNull
-    @NotBlank
-    private String image;
-    @NotNull
-    @NotBlank
-    private String type;    // ongoing or ready
-    @NotNull
-    @NotBlank
-    private String category; //academic or skills
+    private MultipartFile image;
+    private CourseType type;        // ongoing or ready
+    private CourseCategory category;    // academic or skills
+    private String duration;    // 8 weeks or 10 hours
     private String description;
-    @NotNull
-    @NotBlank
     private float price;
     private float offer;
-    @NotNull
-    @NotBlank
-    private int instructorId;
+    private Date publishingDateTime;
 
-    @NotNull
-    @NotBlank
-    private CourseModuleRequest courseModuleRequest;
+    private Teacher courseTeacher;
+
+    private List<CourseModuleRequest> courseModuleRequests;
 }

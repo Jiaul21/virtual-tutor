@@ -1,4 +1,4 @@
-package com.jiaul.virtualtutor.filesystem;
+package com.jiaul.virtualtutor.fileserver;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/files")
@@ -31,6 +32,10 @@ public class FileController {
     @PostMapping("/upload/image")
     public ResponseEntity<?> storeImageFile(@RequestParam("image") MultipartFile file) throws IOException {
         return ResponseEntity.ok(fileService.storeImageFile(file));
+    }
+    @PostMapping("/upload/allImage")
+    public ResponseEntity<?> storeMultipleImageFile(@RequestParam("image") List<MultipartFile> files) throws IOException {
+        return ResponseEntity.ok(fileService.storeMultipleImageFile(files));
     }
 
     @PostMapping("/upload/pdf")

@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
-//@EnableScheduling
+@EnableScheduling
 public class VirtualTutorApplication {
 
     public static void main(String[] args) {

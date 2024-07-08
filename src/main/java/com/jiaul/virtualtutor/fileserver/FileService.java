@@ -1,7 +1,6 @@
-package com.jiaul.virtualtutor.filesystem;
+package com.jiaul.virtualtutor.fileserver;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
@@ -11,12 +10,14 @@ import reactor.core.publisher.Mono;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
 public class FileService {
 
-    private static final String BASE_PATH = "D:/java spring/University/Backend/virtual-tutor/src/main/resources/storage";
+    private static final String BASE_PATH = "D:/java spring/University/Backend/virtual-tutor/src/main/resources";
 
     private static final String FORMAT = "classpath:videos/%s.mp4";
 
@@ -46,11 +47,31 @@ public class FileService {
         return fileName;
     }
 
+    public List<String> storeMultipleImageFile(List<MultipartFile> files) {
+        List<String> fileNameList = new ArrayList<>();
+        files.forEach(file -> {
+            String fileName = String.valueOf(UUID.randomUUID()) + file.getOriginalFilename();
+            try {
+                file.transferTo(new File(BASE_PATH + "/images/" + fileName));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            fileNameList.add(fileName);
+        });
+        System.out.println(fileNameList);
+        return fileNameList;
+    }
+
     public String storePdfFile(MultipartFile file) throws IOException {
         String fileName = String.valueOf(UUID.randomUUID()) + file.getOriginalFilename();
         file.transferTo(new File(BASE_PATH + "/pdf/" + fileName));
         return fileName;
     }
 
+    public String storeFiles(MultipartFile file, String path) throws IOException {
+        String fileName = String.valueOf(UUID.randomUUID()) + file.getOriginalFilename();
+        file.transferTo(new File(path + fileName));
+        return fileName;
+    }
 
 }

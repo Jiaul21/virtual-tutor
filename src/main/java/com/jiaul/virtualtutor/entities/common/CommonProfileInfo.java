@@ -13,10 +13,8 @@ public class CommonProfileInfo {
     private String lastName;
     private String photo;
     private String phone;
-    private Date DOB;
     private String gender;
     private String language;
     private String country;
     private String city;
-    private String bankAccountNo;
 }
