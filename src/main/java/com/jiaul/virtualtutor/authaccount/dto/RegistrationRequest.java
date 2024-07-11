@@ -8,8 +8,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-@JsonIgnoreProperties(ignoreUnknown = true)
-@JsonInclude(JsonInclude.Include.NON_NULL)
+//@JsonIgnoreProperties(ignoreUnknown = true)
+//@JsonInclude(JsonInclude.Include.NON_NULL)
 public class RegistrationRequest {
 
     @NotNull

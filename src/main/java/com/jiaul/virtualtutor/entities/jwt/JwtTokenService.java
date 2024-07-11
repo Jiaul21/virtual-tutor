@@ -22,14 +22,21 @@ public class JwtTokenService {
         jwtToken.setTokenValue(jwtService.generateToken(userCredential));
 //        jwtService.generateRefreshToken(new HashMap<>(), ourUser);
         jwtToken.setTokenType("Bearer ");
-        jwtToken.setExpired(false);
-        jwtToken.setRevoked(false);
+        jwtToken.setNonExpired(true);
+        jwtToken.setNonRevoked(true);
         jwtToken.setUserCredential(userCredential);
         return jwtToken;
     }
 
     public JwtToken updateTokenValueByUserCredential(UserCredential userCredential){
         userCredential.getJwtToken().setTokenValue(jwtService.generateToken(userCredential));
+        userCredential.getJwtToken().setNonExpired(true);
+        userCredential.getJwtToken().setNonRevoked(true);
         return jwtTokenRepository.save(userCredential.getJwtToken());
+    }
+
+    public void revokeToken(JwtToken jwtToken){
+        jwtToken.setNonRevoked(false);
+        jwtTokenRepository.save(jwtToken);
     }
 }

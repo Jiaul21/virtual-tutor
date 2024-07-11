@@ -11,7 +11,7 @@ public class CommonProfileInfo {
 
     private String firstName;
     private String lastName;
-    private String photo;
+    private byte[] photo;
     private String phone;
     private String gender;
     private String language;

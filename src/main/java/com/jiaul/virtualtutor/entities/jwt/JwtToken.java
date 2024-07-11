@@ -16,8 +16,8 @@ public class JwtToken {
     private int id;
     private String tokenValue;
     private String tokenType;
-    private boolean isExpired;
-    private boolean isRevoked;
+    private boolean isNonExpired;
+    private boolean isNonRevoked;
 
     @OneToOne
     private UserCredential userCredential;

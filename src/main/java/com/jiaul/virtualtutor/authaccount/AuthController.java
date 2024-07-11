@@ -2,14 +2,12 @@ package com.jiaul.virtualtutor.authaccount;
 
 import com.jiaul.virtualtutor.authaccount.dto.AuthResponse;
 import com.jiaul.virtualtutor.authaccount.dto.LoginRequest;
+import com.jiaul.virtualtutor.authaccount.dto.LogoutRequest;
 import com.jiaul.virtualtutor.authaccount.dto.RegistrationRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/account")
@@ -25,8 +23,14 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<AuthResponse> signUp(@RequestBody @Valid RegistrationRequest registrationRequest) {
+    public ResponseEntity<String> signUp(@RequestBody @Valid RegistrationRequest registrationRequest) {
         return ResponseEntity.ok(authService.signUp(registrationRequest));
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logOut(@RequestBody @Valid LogoutRequest logoutRequest,
+                                         @RequestHeader(value = "Authorization") String header){
+        return ResponseEntity.ok(authService.logOut(logoutRequest, header));
     }
 
 }

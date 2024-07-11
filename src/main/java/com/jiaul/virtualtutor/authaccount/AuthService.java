@@ -2,8 +2,10 @@ package com.jiaul.virtualtutor.authaccount;
 
 import com.jiaul.virtualtutor.authaccount.dto.AuthResponse;
 import com.jiaul.virtualtutor.authaccount.dto.LoginRequest;
+import com.jiaul.virtualtutor.authaccount.dto.LogoutRequest;
 import com.jiaul.virtualtutor.authaccount.dto.RegistrationRequest;
 import com.jiaul.virtualtutor.authconfig.JwtService;
+import com.jiaul.virtualtutor.entities.admin.Admin;
 import com.jiaul.virtualtutor.entities.jwt.JwtToken;
 import com.jiaul.virtualtutor.entities.jwt.JwtTokenService;
 import com.jiaul.virtualtutor.entities.student.Student;
@@ -44,11 +46,21 @@ public class AuthService {
             UserCredential userCredential = (UserCredential) authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())).getPrincipal();
 
-            if (!(userCredential.getJwtToken().isRevoked() || jwtService.isTokenExpired(userCredential.getJwtToken().getTokenValue()))) {
+            JwtToken newJwtToken = new JwtToken();
+
+            if (userCredential.getJwtToken() == null) {     // first login try after SignUp
+                newJwtToken = jwtTokenService.createJwtTokenByUserCredential(userCredential);
+                userCredential.setJwtToken(newJwtToken);
+            }
+            else if (userCredential.getJwtToken().isNonRevoked() &&             // have to revoke and not expire
+                    !jwtService.isTokenExpired(userCredential.getJwtToken().getTokenValue())) {
                 authResponse.setMessage("Already login with a Device");
                 return authResponse;
+            } else {
+                newJwtToken = jwtTokenService.updateTokenValueByUserCredential(userCredential);
             }
-            JwtToken jwtToken = jwtTokenService.saveToken(jwtTokenService.updateTokenValueByUserCredential(userCredential));
+
+            JwtToken jwtToken = jwtTokenService.saveToken(newJwtToken);
             if (jwtToken != null) {
                 String message = "User Login Successfully";
                 authResponse = makeAuthResponse(userCredential, jwtToken, message);
@@ -62,13 +74,8 @@ public class AuthService {
     /*
     creating User credential
     creating Role based profile
-    creating jwtToken
-    providing login access
      */
-    public AuthResponse signUp(RegistrationRequest registrationRequest) {
-        AuthResponse authResponse = new AuthResponse();
-
-        System.out.println(registrationRequest);
+    public String signUp(RegistrationRequest registrationRequest) {
 
         UserCredential userCredential = new UserCredential();
         userCredential.setEmail(registrationRequest.getEmail());
@@ -86,44 +93,60 @@ public class AuthService {
             newStudent.setUserCredential(userCredential);
             userCredential.setStudent(newStudent);
         } else if (userCredential.getRole().equals(RoleEnum.TEACHER.toString())) {
-            Teacher newTeacher=new Teacher();
+            Teacher newTeacher = new Teacher();
             newTeacher.setFirstName(registrationRequest.getName());
             newTeacher.setUserCredential(userCredential);
             userCredential.setTeacher(newTeacher);
+        } else if (userCredential.getRole().equals(RoleEnum.ADMIN.toString())) {
+            Admin newAdmin = new Admin();
+            newAdmin.setFirstName(registrationRequest.getName());
+            newAdmin.setUserCredential(userCredential);
+            userCredential.setAdmin(newAdmin);
+        } else {
+            return "role must needed";
         }
-        JwtToken jwtToken = jwtTokenService.createJwtTokenByUserCredential(userCredential);
-        userCredential.setJwtToken(jwtToken);
 
         try {
             UserCredential userCredential1 = userCredentialService.createUserCredential(userCredential);
             if (userCredential1 != null) {
-                String message = "User account Created & Login Successfully";
-                System.out.println("//////////// inside if ///////////");
-                authResponse = makeAuthResponse(userCredential1, jwtToken, message);
-                System.out.println("///// if end //////");
+                return "Registration Complete";
             }
         } catch (Exception e) {
-            authResponse.setMessage("Internal Server Error. " + e.getMessage());
+            return "Internal Server Error. " + e.getMessage();
         }
-        return authResponse;
+        return "Registration Failed";
+    }
+
+    public String logOut(LogoutRequest logoutRequest,String header){
+        UserCredential userCredential=userCredentialService.getUserCredentialByEmail(logoutRequest.getEmail());
+        if(logoutRequest.getToken().equals(header.substring(7)) &&
+                userCredential!=null &&
+                userCredential.getJwtToken().getTokenValue().equals(logoutRequest.getToken())){
+            jwtTokenService.revokeToken(userCredential.getJwtToken());
+            return "Logout Successfully";
+        }
+        return "Logout Failed";
     }
 
     /*
-    making login and signup response based on the role
+    making login response based on the role
      */
     public AuthResponse makeAuthResponse(UserCredential userCredential, JwtToken jwtToken, String message) {
         AuthResponse authResponse = new AuthResponse();
         authResponse.setEmail(userCredential.getEmail());
         authResponse.setRole(userCredential.getRole());
-        if(authResponse.getRole().equals(RoleEnum.STUDENT.toString())){
+        if (authResponse.getRole().equals(RoleEnum.STUDENT.toString())) {
             authResponse.setId(userCredential.getStudent().getId());
             authResponse.setName(userCredential.getStudent().getFirstName());
             authResponse.setPhoto(userCredential.getStudent().getPhoto());
-        }
-        else if(authResponse.getRole().equals(RoleEnum.TEACHER.toString())){
+        } else if (authResponse.getRole().equals(RoleEnum.TEACHER.toString())) {
             authResponse.setId(userCredential.getTeacher().getId());
             authResponse.setName(userCredential.getTeacher().getFirstName());
             authResponse.setPhoto(userCredential.getTeacher().getPhoto());
+        } else if (authResponse.getRole().equals(RoleEnum.ADMIN.toString())) {
+            authResponse.setId(userCredential.getAdmin().getId());
+            authResponse.setName(userCredential.getAdmin().getFirstName());
+            authResponse.setPhoto(userCredential.getAdmin().getPhoto());
         }
         authResponse.setMessage(message);
         authResponse.setJwtToken(jwtToken.getTokenValue());

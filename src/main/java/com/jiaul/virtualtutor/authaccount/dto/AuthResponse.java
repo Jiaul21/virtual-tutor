@@ -9,7 +9,7 @@ public class AuthResponse {
     private String name;
     private String email;
     private String role;
-    private String photo;
+    private byte[] photo;
     private String message;
     private String jwtToken;
     private String jwtTokenType;
