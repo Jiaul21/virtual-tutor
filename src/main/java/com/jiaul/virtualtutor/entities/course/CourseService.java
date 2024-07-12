@@ -30,7 +30,7 @@ public class CourseService {
     public Course createCourse(CourseRequest courseRequest) throws IOException {
         Course course=new Course();
         course.setTitle(courseRequest.getTitle());
-        course.setImage(fileManagementService.storeCourseImage(courseRequest.getImage()));
+//        course.setImage(fileManagementService.storeCourseImage(courseRequest.getImage()));
         course.setType(courseRequest.getType().toString());
         course.setCategory(courseRequest.getCategory().toString());
         course.setDescription(courseRequest.getDuration());

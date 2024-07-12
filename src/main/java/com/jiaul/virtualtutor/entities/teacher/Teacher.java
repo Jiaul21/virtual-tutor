@@ -23,6 +23,9 @@ public class Teacher extends CommonProfileInfo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @ElementCollection
+    private List<String> skills;
+
     @OneToOne
     private UserCredential userCredential;
 

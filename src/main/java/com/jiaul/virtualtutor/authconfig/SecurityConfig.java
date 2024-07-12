@@ -1,5 +1,6 @@
 package com.jiaul.virtualtutor.authconfig;
 
+import com.jiaul.virtualtutor.enums.RoleEnum;
 import com.jiaul.virtualtutor.user.UserCredentialService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -44,6 +45,7 @@ public class SecurityConfig {
                         request
                                 .requestMatchers("/account/**").permitAll()
                                 .requestMatchers("/our-user/**").permitAll()
+//                                .requestMatchers("/teacher").hasAnyAuthority(RoleEnum.TEACHER.toString())
                                 .anyRequest().permitAll())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())

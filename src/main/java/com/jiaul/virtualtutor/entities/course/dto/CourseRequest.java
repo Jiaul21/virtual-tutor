@@ -19,9 +19,9 @@ public class CourseRequest {
     @NotNull
     @NotBlank
     private String title;
-    private MultipartFile image;
-    private CourseType type;        // ongoing or ready
-    private CourseCategory category;    // academic or skills
+    private String image;
+    private String type;        // ongoing or ready
+    private String category;    // academic or skills
     private String duration;    // 8 weeks or 10 hours
     private String description;
     private float price;
