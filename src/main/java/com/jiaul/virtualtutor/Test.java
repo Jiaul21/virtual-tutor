@@ -1,12 +1,6 @@
 package com.jiaul.virtualtutor;
 
-import com.jiaul.virtualtutor.enums.RoleEnum;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.web.client.RestTemplate;
-
-import java.io.IOException;
+import java.util.UUID;
 
 //@Configuration
 public class Test {
@@ -33,16 +27,13 @@ public class Test {
     public static void main(String[] args) {
 
 
-       RoleEnum s= RoleEnum.valueOf("STUDENT");
-        System.out.println(RoleEnum.STUDENT);
 
-       if(s.equals(RoleEnum.STUDENT)){
-           System.out.println("matched");
-       }
-       else{
-           System.out.println("not matched");
-       }
-        System.out.println("finished");
+
+
+
+
+
+
 
     }
 

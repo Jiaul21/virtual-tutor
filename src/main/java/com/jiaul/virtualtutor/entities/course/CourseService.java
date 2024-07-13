@@ -3,10 +3,7 @@ package com.jiaul.virtualtutor.entities.course;
 
 import com.jiaul.virtualtutor.entities.course.dto.CourseRequest;
 import com.jiaul.virtualtutor.entities.module.CourseModule;
-import com.jiaul.virtualtutor.entities.module.CourseModuleService;
 import com.jiaul.virtualtutor.entities.module.dto.CourseModuleRequest;
-import com.jiaul.virtualtutor.fileserver.FileManagementService;
-import com.jiaul.virtualtutor.fileserver.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,18 +18,15 @@ public class CourseService {
     @Autowired
     private CourseRepository courseRepository;
 
-    @Autowired
-    private FileManagementService fileManagementService;
-
     /*
     creating course with list of courseModule
      */
     public Course createCourse(CourseRequest courseRequest) throws IOException {
         Course course=new Course();
         course.setTitle(courseRequest.getTitle());
-//        course.setImage(fileManagementService.storeCourseImage(courseRequest.getImage()));
-        course.setType(courseRequest.getType().toString());
-        course.setCategory(courseRequest.getCategory().toString());
+        course.setImage(courseRequest.getImage());
+        course.setType(courseRequest.getType());
+        course.setCategory(courseRequest.getCategory());
         course.setDescription(courseRequest.getDuration());
         course.setDescription(courseRequest.getDescription());
         course.setPrice(courseRequest.getPrice());
@@ -45,10 +39,10 @@ public class CourseService {
             CourseModule courseModule = new CourseModule();
             courseModule.setName(courseModuleRequest.getName());
             courseModule.setTopics(courseModuleRequest.getTopics());
-            courseModule.setThumbnail(fileManagementService.storeModuleThumbnail(courseModuleRequest.getThumbnail()));
+            courseModule.setThumbnail(courseModuleRequest.getThumbnail());
             courseModule.setContentType(courseModuleRequest.getContentType());
             courseModule.setContentName(courseModuleRequest.getContentName());
-            courseModule.setContentSource(fileManagementService.storeCourseVideo(courseModuleRequest.getContentSource()));
+            courseModule.setContentSource(courseModuleRequest.getContentSource());
             courseModule.setPublishingDateTime(courseModuleRequest.getPublishingDateTime());
             if(courseModule.getPublishingDateTime().before(new Date())){ courseModule.setActive(true);}
             courseModule.setCourse(course);

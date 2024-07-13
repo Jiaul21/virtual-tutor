@@ -33,10 +33,8 @@ public class Teacher extends CommonProfileInfo {
     @OneToMany(mappedBy = "courseTeacher")
     private List<Course> sellCourses;
 
-    @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL)
-    private List<Education> educations;
-
-
-    @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL)
-    private List<Experience> experiences;
+//    @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL)
+//    private List<Education> educations;
+//    @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL)
+//    private List<Experience> experiences;
 }

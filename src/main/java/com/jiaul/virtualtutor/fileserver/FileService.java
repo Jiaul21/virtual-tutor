@@ -1,6 +1,7 @@
 package com.jiaul.virtualtutor.fileserver;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
@@ -17,35 +18,38 @@ import java.util.UUID;
 @Service
 public class FileService {
 
-    private static final String BASE_PATH = "D:/java spring/University/Backend/virtual-tutor/src/main/resources";
+    private static final String FORMAT = "classpath:files/videos/%s";
 
-    private static final String FORMAT = "classpath:videos/%s.mp4";
-
-//    @Value("${resource-path}")
-//    private String BASE_PATH;
+    private String BASE_PATH="D:/java spring/University/Backend/virtual-tutor/target/classes/files/";
+    private String videoPath = BASE_PATH + "videos/";
+    private String imagePath = BASE_PATH + "images/";
 
     @Autowired
     private ResourceLoader resourceLoader;
+
+    public String storeVideoFile(MultipartFile file) throws IOException {
+        String fileName = String.valueOf(UUID.randomUUID()) + ".mp4";
+        file.transferTo(new File(videoPath + fileName));
+        return fileName;
+    }
 
     public Mono<Resource> getVideo(String title) {
         return Mono.fromSupplier(() -> resourceLoader.getResource(String.format(FORMAT, title)));
     }
 
-    public String storeVideoFile(MultipartFile file) throws IOException {
-        String fileName = String.valueOf(UUID.randomUUID()) + file.getOriginalFilename();
-        file.transferTo(new File(BASE_PATH + "/videos/" + fileName));
+    public String storeImageFile(MultipartFile file) throws IOException {
+        System.out.println(BASE_PATH);
+        System.out.println(imagePath);
+        String originalName = file.getOriginalFilename();
+        String fileName = String.valueOf(UUID.randomUUID()) + originalName.substring(originalName.lastIndexOf('.'));
+        file.transferTo(new File(imagePath + fileName));
         return fileName;
     }
 
     public byte[] getImageFile(String image) throws IOException {
-        return Files.readAllBytes(new File(BASE_PATH + "/images/" + image).toPath());
+        return Files.readAllBytes(new File(imagePath + image).toPath());
     }
 
-    public String storeImageFile(MultipartFile file) throws IOException {
-        String fileName = String.valueOf(UUID.randomUUID()) + file.getOriginalFilename();
-        file.transferTo(new File(BASE_PATH + "/images/" + fileName));
-        return fileName;
-    }
 
     public List<String> storeMultipleImageFile(List<MultipartFile> files) {
         List<String> fileNameList = new ArrayList<>();

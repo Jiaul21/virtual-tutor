@@ -20,10 +20,10 @@ public class CourseModuleRequest {
     @NotBlank
     private String name;
     private String topics;  // specific topic
-    private MultipartFile thumbnail;
+    private String thumbnail;
     private String contentType; // video or pdf
     private String contentName;
-    private MultipartFile contentSource;
+    private String contentSource;
     private Date publishingDateTime;
     @NotNull
     @NotBlank
