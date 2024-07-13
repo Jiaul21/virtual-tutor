@@ -1,5 +1,10 @@
 HELP.md
 #target/
+target/generated-sources
+target/classes/com
+target/classes/application.properties
+target/classes/static
+
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
