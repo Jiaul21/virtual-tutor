@@ -43,6 +43,30 @@ public class FileController {
         return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.IMAGE_PNG).body(imageFile);
     }
 
+    @PostMapping("/upload/pdf")
+    public ResponseEntity<?> storePdfFile(@RequestParam("pdf") MultipartFile file) throws IOException {
+        return ResponseEntity.ok(fileService.storeVideoFile(file));
+    }
+
+    @GetMapping("/pdf/{file}")
+    public ResponseEntity<?> getPdfFile(@PathVariable String file) throws IOException{
+        byte[] pdf= fileService.getPdfFile(file);
+        return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_PDF).body(pdf);
+    }
+
+    @PostMapping("/upload/doc")
+    public ResponseEntity<?> storeDocFile(@RequestParam("doc") MultipartFile file) throws IOException {
+        return ResponseEntity.ok(fileService.storeVideoFile(file));
+    }
+
+    @GetMapping("/doc/{file}")
+    public ResponseEntity<?> getDocFile(@PathVariable String file) throws IOException{
+        byte[] doc= fileService.getDocFile(file);
+        return ResponseEntity.ok(doc);
+//        return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_OCTET_STREAM).body(doc);
+    }
+
+
 //    @GetMapping(value = "download/{title}", headers = "Accept=application/media")
 //    public Mono<Resource> download(@PathVariable String title) {
 //        System.out.println("ti: "+title);
@@ -56,21 +80,14 @@ public class FileController {
 //        return ResponseEntity.ok(fileService.storeMultipleImageFile(files));
 //    }
 //
-//    @PostMapping("/upload/pdf")
-//    public ResponseEntity<?> storePdfFile(@RequestParam("pdf") MultipartFile file) throws IOException {
-//        return ResponseEntity.ok(fileService.storeVideoFile(file));
-//    }
+
 
 //    @GetMapping("/image/{image}")
 //    public ResponseEntity<?> getImageFile(@PathVariable String image) throws IOException{
 //        byte[] imageFile= fileService.getImageFile(image);
 //        return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.IMAGE_PNG).body(imageFile);
 //    }
-//    @GetMapping("/doc/{file}")
-//    public ResponseEntity<?> getFileByName(@PathVariable String file) throws IOException{
-//        byte[] image= fileService.getImageFile(file);
-//        return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_PDF).body(image);
-//    }
+
 
 //    @GetMapping("/images/{image}")
 //    public ResponseEntity<?> getImage(@PathVariable String image) throws IOException{

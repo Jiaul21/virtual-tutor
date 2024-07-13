@@ -20,9 +20,12 @@ public class FileService {
 
     private static final String FORMAT = "classpath:files/videos/%s";
 
-    private String BASE_PATH="D:/java spring/University/Backend/virtual-tutor/target/classes/files/";
+    private static final String BASE_PATH="D:/java spring/University/Backend/virtual-tutor/target/classes/files/";
     private String videoPath = BASE_PATH + "videos/";
     private String imagePath = BASE_PATH + "images/";
+    private String pdfPath=BASE_PATH+"pdf/";
+    private String docPath=BASE_PATH+"doc/";
+
 
     @Autowired
     private ResourceLoader resourceLoader;
@@ -38,8 +41,6 @@ public class FileService {
     }
 
     public String storeImageFile(MultipartFile file) throws IOException {
-        System.out.println(BASE_PATH);
-        System.out.println(imagePath);
         String originalName = file.getOriginalFilename();
         String fileName = String.valueOf(UUID.randomUUID()) + originalName.substring(originalName.lastIndexOf('.'));
         file.transferTo(new File(imagePath + fileName));
@@ -50,32 +51,41 @@ public class FileService {
         return Files.readAllBytes(new File(imagePath + image).toPath());
     }
 
-
-    public List<String> storeMultipleImageFile(List<MultipartFile> files) {
-        List<String> fileNameList = new ArrayList<>();
-        files.forEach(file -> {
-            String fileName = String.valueOf(UUID.randomUUID()) + file.getOriginalFilename();
-            try {
-                file.transferTo(new File(BASE_PATH + "/images/" + fileName));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            fileNameList.add(fileName);
-        });
-        System.out.println(fileNameList);
-        return fileNameList;
-    }
-
     public String storePdfFile(MultipartFile file) throws IOException {
-        String fileName = String.valueOf(UUID.randomUUID()) + file.getOriginalFilename();
-        file.transferTo(new File(BASE_PATH + "/pdf/" + fileName));
+        String originalName = file.getOriginalFilename();
+        String fileName = String.valueOf(UUID.randomUUID()) + originalName.substring(originalName.lastIndexOf('.'));
+        file.transferTo(new File(pdfPath + fileName));
         return fileName;
+    }
+    public byte[] getPdfFile(String pdf) throws IOException {
+        return Files.readAllBytes(new File(pdfPath + pdf).toPath());
+    }
+    public byte[] getDocFile(String pdf) throws IOException {
+        return Files.readAllBytes(new File(pdfPath + pdf).toPath());
     }
 
-    public String storeFiles(MultipartFile file, String path) throws IOException {
-        String fileName = String.valueOf(UUID.randomUUID()) + file.getOriginalFilename();
-        file.transferTo(new File(path + fileName));
-        return fileName;
-    }
+
+//    public List<String> storeMultipleImageFile(List<MultipartFile> files) {
+//        List<String> fileNameList = new ArrayList<>();
+//        files.forEach(file -> {
+//            String fileName = String.valueOf(UUID.randomUUID()) + file.getOriginalFilename();
+//            try {
+//                file.transferTo(new File(BASE_PATH + "/images/" + fileName));
+//            } catch (IOException e) {
+//                throw new RuntimeException(e);
+//            }
+//            fileNameList.add(fileName);
+//        });
+//        System.out.println(fileNameList);
+//        return fileNameList;
+//    }
+//
+
+//
+//    public String storeFiles(MultipartFile file, String path) throws IOException {
+//        String fileName = String.valueOf(UUID.randomUUID()) + file.getOriginalFilename();
+//        file.transferTo(new File(path + fileName));
+//        return fileName;
+//    }
 
 }
