@@ -11,6 +11,7 @@ import com.jiaul.virtualtutor.entities.jwt.JwtTokenService;
 import com.jiaul.virtualtutor.entities.student.Student;
 import com.jiaul.virtualtutor.entities.teacher.Teacher;
 import com.jiaul.virtualtutor.enums.RoleEnum;
+import com.jiaul.virtualtutor.fileserver.FileService;
 import com.jiaul.virtualtutor.user.UserCredential;
 import com.jiaul.virtualtutor.user.UserCredentialService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,8 @@ public class AuthService {
     private AuthenticationManager authenticationManager;
     @Autowired
     private JwtService jwtService;
+    @Autowired
+    private FileService fileService;
 
     /*
     checking user authentication
@@ -139,15 +142,15 @@ public class AuthService {
         if (authResponse.getRole().equals(RoleEnum.STUDENT.toString())) {
             authResponse.setId(userCredential.getStudent().getId());
             authResponse.setName(userCredential.getStudent().getFirstName());
-            authResponse.setPhoto(userCredential.getStudent().getPhoto());
+            authResponse.setPhoto(fileService.getBase64(userCredential.getStudent().getPhoto()));
         } else if (authResponse.getRole().equals(RoleEnum.TEACHER.toString())) {
             authResponse.setId(userCredential.getTeacher().getId());
             authResponse.setName(userCredential.getTeacher().getFirstName());
-            authResponse.setPhoto(userCredential.getTeacher().getPhoto());
+            authResponse.setPhoto(fileService.getBase64(userCredential.getTeacher().getPhoto()));
         } else if (authResponse.getRole().equals(RoleEnum.ADMIN.toString())) {
             authResponse.setId(userCredential.getAdmin().getId());
             authResponse.setName(userCredential.getAdmin().getFirstName());
-            authResponse.setPhoto(userCredential.getAdmin().getPhoto());
+            authResponse.setPhoto(fileService.getBase64(userCredential.getAdmin().getPhoto()));
         }
         authResponse.setMessage(message);
         authResponse.setJwtToken(jwtToken.getTokenValue());

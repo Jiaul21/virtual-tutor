@@ -34,6 +34,7 @@ public class FileController {
 
     @PostMapping("/upload/image")
     public ResponseEntity<?> storeImageFile(@RequestParam("image") MultipartFile file) throws IOException {
+        System.out.println("..........................++++++++++++++++++++++++++++++........................");
         return ResponseEntity.ok(fileService.storeImageFile(file));
     }
 

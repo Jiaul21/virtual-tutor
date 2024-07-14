@@ -8,8 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import reactor.core.publisher.Mono;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +24,7 @@ public class FileService {
     private String imagePath = BASE_PATH + "images/";
     private String pdfPath=BASE_PATH+"pdf/";
     private String docPath=BASE_PATH+"doc/";
+    private  String picPath=BASE_PATH+"pic/";
 
 
     @Autowired
@@ -65,27 +65,33 @@ public class FileService {
     }
 
 
-//    public List<String> storeMultipleImageFile(List<MultipartFile> files) {
-//        List<String> fileNameList = new ArrayList<>();
-//        files.forEach(file -> {
-//            String fileName = String.valueOf(UUID.randomUUID()) + file.getOriginalFilename();
-//            try {
-//                file.transferTo(new File(BASE_PATH + "/images/" + fileName));
-//            } catch (IOException e) {
-//                throw new RuntimeException(e);
-//            }
-//            fileNameList.add(fileName);
-//        });
-//        System.out.println(fileNameList);
-//        return fileNameList;
-//    }
-//
 
-//
-//    public String storeFiles(MultipartFile file, String path) throws IOException {
-//        String fileName = String.valueOf(UUID.randomUUID()) + file.getOriginalFilename();
-//        file.transferTo(new File(path + fileName));
-//        return fileName;
-//    }
+    public String storeBase64(String base64){
+        String fileName= String.valueOf(UUID.randomUUID())+".txt";
+        try {
+            FileWriter file = new FileWriter(picPath+fileName);
+            file.write(base64);
+            file.close();
+        } catch (IOException e) {
+            System.out.println("Error: "+e.getMessage());
+            return null;
+        }
+        return fileName;
+    }
+
+    public String getBase64(String name){
+        String base64="";
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(picPath+name));
+            String line;
+            while ((line = br.readLine()) != null) {
+                base64=base64+line;
+            }
+            br.close();
+        } catch(IOException e) {
+            System.out.println("Error: " + e);
+        }
+        return base64;
+    }
 
 }

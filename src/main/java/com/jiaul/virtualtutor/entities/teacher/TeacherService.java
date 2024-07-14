@@ -1,13 +1,15 @@
 package com.jiaul.virtualtutor.entities.teacher;
 
 import com.jiaul.virtualtutor.entities.teacher.dto.TeacherDto;
+import com.jiaul.virtualtutor.fileserver.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Base64;
-import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class TeacherService {
@@ -15,17 +17,19 @@ public class TeacherService {
     @Autowired
     private TeacherRepository teacherRepository;
 
+    @Autowired
+    private FileService fileService;
+
     public Teacher createTeacher(Teacher teacher){
         return teacherRepository.save(teacher);
     }
 
-    public Teacher updateTeacher(TeacherDto teacherDto){
+    public Teacher updateTeacher(TeacherDto teacherDto) throws IOException {
         Teacher teacher=teacherRepository.findById(teacherDto.getId()).orElseThrow();
 
         teacher.setFirstName(teacherDto.getFirstName());
         teacher.setLastName(teacherDto.getLastName());
-//        teacher.setPhoto(Base64.getDecoder().decode(teacherDto.getPhoto().toString()));
-        teacher.setPhoto(Base64.getDecoder().decode(teacherDto.getPhoto()));
+        teacher.setPhoto(fileService.storeBase64(teacherDto.getPhoto()));
         teacher.setPhone(teacherDto.getPhone());
         teacher.setGender(teacherDto.getGender());
         teacher.setLanguage(teacherDto.getLanguage());
@@ -35,19 +39,20 @@ public class TeacherService {
         teacher.setDegree(teacherDto.getDegree());
         teacher.setSkills(teacherDto.getSkills());
 
+        teacher= teacherRepository.save(teacher);
+        teacher.setPhoto(fileService.getBase64(teacher.getPhoto()));
 
-
-
-        return teacherRepository.save(teacher);
+        return teacher;
     }
 
-    public Optional<Teacher> getTeacherById(int id){
-        return teacherRepository.findById(id);
+    public Teacher getTeacherById(int id){
+        return teacherRepository.findById(id).orElseThrow();
     }
 
-    public byte[] updateProfilePhoto(MultipartFile file,int id) throws IOException {
-        Teacher teacher= teacherRepository.findById(id).orElseThrow();
-        teacher.setPhoto(file.getBytes());
-        return teacherRepository.save(teacher).getPhoto();
-    }
+//    public byte[] updateProfilePhoto(MultipartFile file,int id) throws IOException {
+//        Teacher teacher= teacherRepository.findById(id).orElseThrow();
+//        teacher.setPhoto(file.getBytes());
+//        return teacherRepository.save(teacher).getPhoto();
+//    }
+
 }

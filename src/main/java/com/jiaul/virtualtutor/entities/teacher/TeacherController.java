@@ -22,19 +22,19 @@ public class TeacherController {
     }
 
     @PatchMapping("/update")
-    public ResponseEntity<Teacher> updateTeacher(@RequestBody TeacherDto teacherDto){
+    public ResponseEntity<Teacher> updateTeacher(@RequestBody TeacherDto teacherDto) throws IOException {
         System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
-        System.out.println(teacherDto);
+//        System.out.println(teacherDto);
         return ResponseEntity.ok(teacherService.updateTeacher(teacherDto));
     }
 
     @GetMapping("/get/{id}")
-    public ResponseEntity<Optional<Teacher>> getTeacherById(int id){
+    public ResponseEntity<Teacher> getTeacherById(int id){
         return ResponseEntity.ok(teacherService.getTeacherById(id));
     }
 
-    @PatchMapping("/update/profile-photo/{id}")
-    public ResponseEntity<byte[]> updateProfilePhoto(@RequestParam("image") MultipartFile file, int id) throws IOException {
-        return ResponseEntity.ok(teacherService.updateProfilePhoto(file,id));
-    }
+//    @PatchMapping("/update/profile-photo/{id}")
+//    public ResponseEntity<byte[]> updateProfilePhoto(@RequestParam("image") MultipartFile file, int id) throws IOException {
+//        return ResponseEntity.ok(teacherService.updateProfilePhoto(file,id));
+//    }
 }
