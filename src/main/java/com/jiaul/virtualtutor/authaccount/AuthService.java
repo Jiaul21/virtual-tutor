@@ -52,11 +52,12 @@ public class AuthService {
                 newJwtToken = jwtTokenService.createJwtTokenByUserCredential(userCredential);
                 userCredential.setJwtToken(newJwtToken);
             }
-            else if (userCredential.getJwtToken().isNonRevoked() &&             // have to revoke and not expire
-                    !jwtService.isTokenExpired(userCredential.getJwtToken().getTokenValue())) {
-                authResponse.setMessage("Already login with a Device");
-                return authResponse;
-            } else {
+//            else if (userCredential.getJwtToken().isNonRevoked() &&             // have to revoke and not expire
+//                    !jwtService.isTokenExpired(userCredential.getJwtToken().getTokenValue())) {
+//                authResponse.setMessage("Already login with a Device");
+//                return authResponse;
+//            }
+            else {
                 newJwtToken = jwtTokenService.updateTokenValueByUserCredential(userCredential);
             }
 
