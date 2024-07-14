@@ -7,6 +7,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.Data;
 
+import java.util.Base64;
 import java.util.List;
 
 @Data
@@ -15,7 +16,7 @@ public class TeacherDto {
     private int id;
     private String firstName;
     private String lastName;
-    private byte[] photo;
+    private String photo;
     private String phone;
     private String gender;
     private String language;

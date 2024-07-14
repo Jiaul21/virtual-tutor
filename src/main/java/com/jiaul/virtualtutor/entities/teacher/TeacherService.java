@@ -24,6 +24,7 @@ public class TeacherService {
 
         teacher.setFirstName(teacherDto.getFirstName());
         teacher.setLastName(teacherDto.getLastName());
+//        teacher.setPhoto(Base64.getDecoder().decode(teacherDto.getPhoto().toString()));
         teacher.setPhoto(Base64.getDecoder().decode(teacherDto.getPhoto()));
         teacher.setPhone(teacherDto.getPhone());
         teacher.setGender(teacherDto.getGender());
@@ -33,6 +34,9 @@ public class TeacherService {
         teacher.setBio(teacherDto.getBio());
         teacher.setDegree(teacherDto.getDegree());
         teacher.setSkills(teacherDto.getSkills());
+
+
+
 
         return teacherRepository.save(teacher);
     }

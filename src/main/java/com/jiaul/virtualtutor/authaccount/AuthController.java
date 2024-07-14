@@ -30,6 +30,8 @@ public class AuthController {
     @PostMapping("/logout")
     public ResponseEntity<String> logOut(@RequestBody @Valid LogoutRequest logoutRequest,
                                          @RequestHeader(value = "Authorization") String header){
+        System.out.println(logoutRequest);
+        System.out.println(header);
         return ResponseEntity.ok(authService.logOut(logoutRequest, header));
     }
 

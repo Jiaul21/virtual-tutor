@@ -23,6 +23,8 @@ public class TeacherController {
 
     @PatchMapping("/update")
     public ResponseEntity<Teacher> updateTeacher(@RequestBody TeacherDto teacherDto){
+        System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
+        System.out.println(teacherDto);
         return ResponseEntity.ok(teacherService.updateTeacher(teacherDto));
     }
 
