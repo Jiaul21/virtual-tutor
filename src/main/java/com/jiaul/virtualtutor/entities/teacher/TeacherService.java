@@ -5,11 +5,7 @@ import com.jiaul.virtualtutor.fileserver.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.util.UUID;
 
 @Service
 public class TeacherService {
@@ -20,12 +16,12 @@ public class TeacherService {
     @Autowired
     private FileService fileService;
 
-    public Teacher createTeacher(Teacher teacher){
+    public Teacher createTeacher(Teacher teacher) {
         return teacherRepository.save(teacher);
     }
 
     public Teacher updateTeacher(TeacherDto teacherDto) throws IOException {
-        Teacher teacher=teacherRepository.findById(teacherDto.getId()).orElseThrow();
+        Teacher teacher = teacherRepository.findById(teacherDto.getId()).orElseThrow();
 
         teacher.setFirstName(teacherDto.getFirstName());
         teacher.setLastName(teacherDto.getLastName());
@@ -39,14 +35,17 @@ public class TeacherService {
         teacher.setDegree(teacherDto.getDegree());
         teacher.setSkills(teacherDto.getSkills());
 
-        teacher= teacherRepository.save(teacher);
+        teacher = teacherRepository.save(teacher);
         teacher.setPhoto(fileService.getBase64(teacher.getPhoto()));
 
         return teacher;
     }
 
-    public Teacher getTeacherById(int id){
-        return teacherRepository.findById(id).orElseThrow();
+    public Teacher getTeacherById(int id) {
+
+        Teacher teacher = teacherRepository.findById(id).orElseThrow();
+        teacher.setPhoto(fileService.getBase64(teacher.getPhoto()));
+        return teacher;
     }
 
 //    public byte[] updateProfilePhoto(MultipartFile file,int id) throws IOException {

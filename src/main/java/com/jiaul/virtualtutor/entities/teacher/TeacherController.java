@@ -29,7 +29,7 @@ public class TeacherController {
     }
 
     @GetMapping("/get/{id}")
-    public ResponseEntity<Teacher> getTeacherById(int id){
+    public ResponseEntity<Teacher> getTeacherById(@PathVariable int id){
         return ResponseEntity.ok(teacherService.getTeacherById(id));
     }
 

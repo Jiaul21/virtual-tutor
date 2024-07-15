@@ -1,7 +1,8 @@
 package com.jiaul.virtualtutor;
 
-import java.io.*;
-import java.util.UUID;
+import java.util.Arrays;
+import java.util.Base64;
+
 
 //@Configuration
 public class Test {
@@ -19,8 +20,6 @@ public class Test {
 //        return restTemplate;
 //    }
 
-
-
 //    public static void c(){
 //        System.out.println((char)34);
 //    }
@@ -29,46 +28,15 @@ public class Test {
 
         String path="D:/java spring/University/Backend/virtual-tutor/target/classes/files/pic/";
 
-        String str = "This a txt file";
+        String b= Base64.getEncoder().encodeToString(path.getBytes());
 
-        try {
-            FileWriter file = new FileWriter(path+"hello.txt");
-            file.write(str);
-            System.out.println("File writing complete");
+        System.out.println(b);
 
-            file.close();
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(path+"hello.txt"));
-            String line;
-            while ((line = br.readLine()) != null) {
-                System.out.println(line);
-            }
-            br.close();
-        } catch(IOException e) {
-            System.out.println("Error: " + e);
-        }
+        String s= Arrays.toString(Base64.getDecoder().decode(b.toString()));
 
 
-//        char array[] = new char[100];
-//        String s=new String();
-//        try {
-//            FileReader file = new FileReader(path+"hello.txt");
-//            file.read(array);
-//            file.close();
-//
-//            System.out.println(array);
-//        } catch (IOException e) {
-//            System.out.println(e.getMessage());
-//        }
-//
-
-
+        System.out.println("new String is: ");
+        System.out.println(s);
 
     }
-
-
 }
