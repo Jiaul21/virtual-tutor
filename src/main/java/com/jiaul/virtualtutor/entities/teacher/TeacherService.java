@@ -1,12 +1,14 @@
 package com.jiaul.virtualtutor.entities.teacher;
 
 import com.jiaul.virtualtutor.entities.course.Course;
+import com.jiaul.virtualtutor.entities.course.dto.CourseResponse;
 import com.jiaul.virtualtutor.entities.teacher.dto.TeacherDto;
 import com.jiaul.virtualtutor.fileserver.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -50,8 +52,32 @@ public class TeacherService {
         return teacher;
     }
 
-    public List<Course> getTeacherAllCourse(int id){
-        return teacherRepository.findById(id).orElseThrow().getSellCourses();
+    public List<CourseResponse> getTeacherAllCourse(int id){
+        Teacher teacher= teacherRepository.findById(id).orElseThrow();
+        List<CourseResponse> courseResponses=new ArrayList<>();
+
+        teacher.getSellCourses().forEach(course -> {
+            CourseResponse c=new CourseResponse();
+            c.setId(course.getId());
+            c.setTitle(course.getTitle());
+            c.setImage(course.getImage());
+            c.setType(course.getType());
+            c.setCategory(course.getCategory());
+            c.setDuration(course.getDuration());
+            c.setDescription(course.getDescription());
+            c.setRating(course.getRating());
+            c.setPrice(course.getPrice());
+            c.setOffer(course.getOffer());
+            c.setPublishingDateTime(course.getPublishingDateTime());
+            c.setActive(course.isActive());
+            c.setCourseModules(course.getCourseModules());
+            c.setCourseStudents(course.getCourseStudents());
+            c.setCourseTeacher(teacher.getId());
+
+            courseResponses.add(c);
+        });
+
+        return courseResponses;
     }
 
 //    public byte[] updateProfilePhoto(MultipartFile file,int id) throws IOException {
