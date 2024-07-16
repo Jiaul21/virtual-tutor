@@ -34,6 +34,8 @@ public class CourseService {
         course.setPublishingDateTime(courseRequest.getPublishingDateTime());
         if(course.getPublishingDateTime().before(new Date())){ course.setActive(true);}
 
+        course.setCourseTeacher(courseRequest.getCourseTeacher());
+
         List<CourseModule> courseModules = new ArrayList<>();
         for (CourseModuleRequest courseModuleRequest : courseRequest.getCourseModuleRequests()) {
             CourseModule courseModule = new CourseModule();
