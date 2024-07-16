@@ -1,5 +1,6 @@
 package com.jiaul.virtualtutor.entities.teacher;
 
+import com.jiaul.virtualtutor.entities.course.Course;
 import com.jiaul.virtualtutor.entities.teacher.dto.TeacherDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -7,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -23,14 +25,17 @@ public class TeacherController {
 
     @PatchMapping("/update")
     public ResponseEntity<Teacher> updateTeacher(@RequestBody TeacherDto teacherDto) throws IOException {
-        System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%");
-//        System.out.println(teacherDto);
         return ResponseEntity.ok(teacherService.updateTeacher(teacherDto));
     }
 
     @GetMapping("/get/{id}")
     public ResponseEntity<Teacher> getTeacherById(@PathVariable int id){
         return ResponseEntity.ok(teacherService.getTeacherById(id));
+    }
+
+    @GetMapping("/get/teacher/all-course/{id}")
+    public ResponseEntity<List<Course>> getTeacherAllCourse(@PathVariable int id){
+        return ResponseEntity.ok(teacherService.getTeacherAllCourse(id));
     }
 
 //    @PatchMapping("/update/profile-photo/{id}")

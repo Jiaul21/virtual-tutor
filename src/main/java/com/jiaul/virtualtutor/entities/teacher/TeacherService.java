@@ -1,11 +1,13 @@
 package com.jiaul.virtualtutor.entities.teacher;
 
+import com.jiaul.virtualtutor.entities.course.Course;
 import com.jiaul.virtualtutor.entities.teacher.dto.TeacherDto;
 import com.jiaul.virtualtutor.fileserver.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.List;
 
 @Service
 public class TeacherService {
@@ -46,6 +48,10 @@ public class TeacherService {
         Teacher teacher = teacherRepository.findById(id).orElseThrow();
         teacher.setPhoto(fileService.getBase64(teacher.getPhoto()));
         return teacher;
+    }
+
+    public List<Course> getTeacherAllCourse(int id){
+        return teacherRepository.findById(id).orElseThrow().getSellCourses();
     }
 
 //    public byte[] updateProfilePhoto(MultipartFile file,int id) throws IOException {
