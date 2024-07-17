@@ -36,22 +36,21 @@ public class CourseService {
 
         course.setCourseTeacher(courseRequest.getCourseTeacher());
 
-        List<CourseModule> courseModules = new ArrayList<>();
-        for (CourseModuleRequest courseModuleRequest : courseRequest.getCourseModuleRequests()) {
-            CourseModule courseModule = new CourseModule();
-            courseModule.setName(courseModuleRequest.getName());
-            courseModule.setTopics(courseModuleRequest.getTopics());
-            courseModule.setThumbnail(courseModuleRequest.getThumbnail());
-            courseModule.setContentType(courseModuleRequest.getContentType());
-            courseModule.setContentName(courseModuleRequest.getContentName());
-            courseModule.setContentSource(courseModuleRequest.getContentSource());
-            courseModule.setPublishingDateTime(courseModuleRequest.getPublishingDateTime());
-            if(courseModule.getPublishingDateTime().before(new Date())){ courseModule.setActive(true);}
-            courseModule.setCourse(course);
-
-            courseModules.add(courseModule);
-        }
-        course.setCourseModules(courseModules);
+//        List<CourseModule> courseModules = new ArrayList<>();
+//        for (CourseModuleRequest courseModuleRequest : courseRequest.getCourseModuleRequests()) {
+//            CourseModule courseModule = new CourseModule();
+//            courseModule.setName(courseModuleRequest.getName());
+//            courseModule.setTopics(courseModuleRequest.getTopics());
+//            courseModule.setThumbnail(courseModuleRequest.getThumbnail());
+//            courseModule.setContentType(courseModuleRequest.getContentType());
+//            courseModule.setContentName(courseModuleRequest.getContentName());
+//            courseModule.setContentSource(courseModuleRequest.getContentSource());
+//            courseModule.setPublishingDateTime(courseModuleRequest.getPublishingDateTime());
+//            if(courseModule.getPublishingDateTime().before(new Date())){ courseModule.setActive(true);}
+//            courseModule.setCourse(course);
+//
+//            courseModules.add(courseModule);
+//        }
         return courseRepository.save(course);
     }
 

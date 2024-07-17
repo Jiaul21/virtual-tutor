@@ -82,7 +82,6 @@ public class FileService {
     }
 
     public String storeAnyFile(MultipartFile file) throws IOException {
-        System.out.println(file.getContentType());
 
         String originalName=file.getOriginalFilename();
         String newName="";
@@ -97,7 +96,24 @@ public class FileService {
         }else if (fileType.equals(".ppt")) {
             newName=storePptFile(file);
         }
+        return newName;
+    }
 
+    public String getAnyFile(MultipartFile file) throws IOException {
+
+        String originalName=file.getOriginalFilename();
+        String newName="";
+        String fileType=originalName.substring(originalName.lastIndexOf('.'));
+
+        if(fileType.equals(".mp4") || fileType.equals(".mkv")){
+            newName=storeVideoFile(file);
+        } else if (fileType.equals(".pdf")) {
+            newName=storePdfFile(file);
+        } else if (fileType.equals(".docx")) {
+            newName=storeDocFile(file);
+        }else if (fileType.equals(".ppt")) {
+            newName=storePptFile(file);
+        }
         return newName;
     }
 

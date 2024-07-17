@@ -1,7 +1,10 @@
 package com.jiaul.virtualtutor.entities.module;
 
 
+import com.jiaul.virtualtutor.entities.course.Course;
+import com.jiaul.virtualtutor.entities.course.CourseService;
 import com.jiaul.virtualtutor.entities.module.dto.CourseModuleRequest;
+import com.jiaul.virtualtutor.enums.CourseContent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,18 +17,32 @@ public class CourseModuleService {
     @Autowired
     private CourseModuleRepository courseModuleRepository;
 
+    @Autowired
+    private CourseService courseService;
+
 
     public CourseModule addCourseModule(CourseModuleRequest courseModuleRequest) throws IOException {
         CourseModule courseModule = new CourseModule();
         courseModule.setName(courseModuleRequest.getName());
         courseModule.setTopics(courseModuleRequest.getTopics());
         courseModule.setThumbnail(courseModuleRequest.getThumbnail());
-        courseModule.setContentType(courseModuleRequest.getContentType());
         courseModule.setContentName(courseModuleRequest.getContentName());
+
+        String fileType=courseModule.getContentName().substring(courseModule.getContentName().lastIndexOf('.'));
+        if(fileType.equals(".mp4") || fileType.equals(".mkv")) courseModule.setContentType(CourseContent.VIDEO.toString());
+        else if(fileType.equals(".pdf")) courseModule.setContentType(CourseContent.PDF.toString());
+        else if(fileType.equals(".ppt")) courseModule.setContentType(CourseContent.PPT.toString());
+        else if(fileType.equals(".docx")) courseModule.setContentType(CourseContent.DOC.toString());
+
         courseModule.setContentSource(courseModuleRequest.getContentSource());
         courseModule.setPublishingDateTime(courseModuleRequest.getPublishingDateTime());
         if(courseModule.getPublishingDateTime().before(new Date())){ courseModule.setActive(true);}
-        courseModule.setCourse(courseModuleRequest.getCourse());
+
+        Course course= courseService.getCourseByID(courseModuleRequest.getCourse().getId());
+        if(!course.isActive() && course.getPublishingDateTime().before(new Date())) course.setActive(true);
+        course=courseService.updateCourse(course);
+
+        courseModule.setCourse(course);
         return courseModuleRepository.save(courseModule);
     }
 
