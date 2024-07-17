@@ -67,6 +67,11 @@ public class FileController {
 //        return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_OCTET_STREAM).body(doc);
     }
 
+    @PostMapping("/upload/any-file")
+    public ResponseEntity<?> storeAnyFile(@RequestParam("file") MultipartFile file) throws IOException {
+        return ResponseEntity.ok(fileService.storeAnyFile(file));
+    }
+
 
 //    @GetMapping(value = "download/{title}", headers = "Accept=application/media")
 //    public Mono<Resource> download(@PathVariable String title) {

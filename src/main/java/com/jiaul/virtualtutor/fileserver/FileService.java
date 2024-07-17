@@ -25,6 +25,7 @@ public class FileService {
     private String pdfPath=BASE_PATH+"pdf/";
     private String docPath=BASE_PATH+"doc/";
     private  String picPath=BASE_PATH+"pic/";
+    private  String pptPath=BASE_PATH+"ppt/";
 
 
     @Autowired
@@ -60,9 +61,47 @@ public class FileService {
     public byte[] getPdfFile(String pdf) throws IOException {
         return Files.readAllBytes(new File(pdfPath + pdf).toPath());
     }
-    public byte[] getDocFile(String pdf) throws IOException {
-        return Files.readAllBytes(new File(pdfPath + pdf).toPath());
+    public String storeDocFile(MultipartFile file) throws IOException {
+        String originalName = file.getOriginalFilename();
+        String fileName = String.valueOf(UUID.randomUUID()) + originalName.substring(originalName.lastIndexOf('.'));
+        file.transferTo(new File(docPath + fileName));
+        return fileName;
     }
+    public byte[] getDocFile(String pdf) throws IOException {
+        return Files.readAllBytes(new File(docPath + pdf).toPath());
+    }
+
+    public String storePptFile(MultipartFile file) throws IOException {
+        String originalName = file.getOriginalFilename();
+        String fileName = String.valueOf(UUID.randomUUID()) + originalName.substring(originalName.lastIndexOf('.'));
+        file.transferTo(new File(pptPath + fileName));
+        return fileName;
+    }
+    public byte[] getPptFile(String pdf) throws IOException {
+        return Files.readAllBytes(new File(pptPath + pdf).toPath());
+    }
+
+    public String storeAnyFile(MultipartFile file) throws IOException {
+        System.out.println(file.getContentType());
+
+        String originalName=file.getOriginalFilename();
+        String newName="";
+        String fileType=originalName.substring(originalName.lastIndexOf('.'));
+
+        if(fileType.equals(".mp4") || fileType.equals(".mkv")){
+            newName=storeVideoFile(file);
+        } else if (fileType.equals(".pdf")) {
+            newName=storePdfFile(file);
+        } else if (fileType.equals(".docx")) {
+            newName=storeDocFile(file);
+        }else if (fileType.equals(".ppt")) {
+            newName=storePptFile(file);
+        }
+
+        return newName;
+    }
+
+
 
 
 
