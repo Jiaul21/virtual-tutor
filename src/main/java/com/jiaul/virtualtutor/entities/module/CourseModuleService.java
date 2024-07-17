@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class CourseModuleService {
@@ -48,6 +49,12 @@ public class CourseModuleService {
 
     public CourseModule getCourseModuleById(int id) {
         return courseModuleRepository.findById(id).orElseThrow();
+    }
+
+    public List<CourseModule> getAllModuleByCourseId(int id){
+        Course course=new Course();
+        course.setId(id);
+        return courseModuleRepository.findAllByCourse(course);
     }
 
     public String deleteCourseModuleById(int id){

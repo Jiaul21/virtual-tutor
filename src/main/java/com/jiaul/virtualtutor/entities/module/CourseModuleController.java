@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/module")
@@ -23,6 +24,11 @@ public class CourseModuleController {
     @GetMapping("/{id}")
     public ResponseEntity<CourseModule> getCourseModuleById(@PathVariable int id){
         return ResponseEntity.ok(courseModuleService.getCourseModuleById(id));
+    }
+
+    @GetMapping("/get-all/{id}")
+    public ResponseEntity<List<CourseModule>> getAllModuleByCourseId(@PathVariable int id){
+        return ResponseEntity.ok(courseModuleService.getAllModuleByCourseId(id));
     }
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteCourseModuleById(@PathVariable int id){
