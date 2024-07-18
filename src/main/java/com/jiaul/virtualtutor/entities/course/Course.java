@@ -31,7 +31,7 @@ public class Course {
     private Date publishingDateTime;
     private boolean isActive;
 
-    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<CourseModule> courseModules;
 
     @ManyToMany

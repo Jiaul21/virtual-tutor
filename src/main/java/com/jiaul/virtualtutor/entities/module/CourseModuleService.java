@@ -4,11 +4,13 @@ package com.jiaul.virtualtutor.entities.module;
 import com.jiaul.virtualtutor.entities.course.Course;
 import com.jiaul.virtualtutor.entities.course.CourseService;
 import com.jiaul.virtualtutor.entities.module.dto.CourseModuleRequest;
+import com.jiaul.virtualtutor.entities.module.dto.CourseModuleResponse;
 import com.jiaul.virtualtutor.enums.CourseContent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -51,10 +53,28 @@ public class CourseModuleService {
         return courseModuleRepository.findById(id).orElseThrow();
     }
 
-    public List<CourseModule> getAllModuleByCourseId(int id){
+    public List<CourseModuleResponse> getAllModuleByCourseId(int id){
+        System.out.println("course id: "+id);
+
+
         Course course=new Course();
         course.setId(id);
-        return courseModuleRepository.findAllByCourse(course);
+        List<CourseModuleResponse> courseModuleResponses=new ArrayList<>();
+        courseModuleRepository.findAllByCourse(course).forEach(module ->{
+            CourseModuleResponse moduleResponse=new CourseModuleResponse();
+            moduleResponse.setId(module.getId());
+            moduleResponse.setName(module.getName());
+            moduleResponse.setThumbnail(module.getThumbnail());
+            moduleResponse.setContentType(moduleResponse.getContentType());
+            moduleResponse.setContentName(module.getContentName());
+            moduleResponse.setContentSource(module.getContentSource());
+            moduleResponse.setPublishingDateTime(module.getPublishingDateTime());
+            moduleResponse.setActive(module.isActive());
+            moduleResponse.setCourse(module.getCourse().getId());
+
+            courseModuleResponses.add(moduleResponse);
+        });
+        return courseModuleResponses;
     }
 
     public String deleteCourseModuleById(int id){

@@ -1,6 +1,7 @@
 package com.jiaul.virtualtutor.entities.module;
 
 import com.jiaul.virtualtutor.entities.module.dto.CourseModuleRequest;
+import com.jiaul.virtualtutor.entities.module.dto.CourseModuleResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,7 @@ public class CourseModuleController {
     }
 
     @GetMapping("/get-all/{id}")
-    public ResponseEntity<List<CourseModule>> getAllModuleByCourseId(@PathVariable int id){
+    public ResponseEntity<List<CourseModuleResponse>> getAllModuleByCourseId(@PathVariable int id){
         return ResponseEntity.ok(courseModuleService.getAllModuleByCourseId(id));
     }
     @DeleteMapping("/delete/{id}")
