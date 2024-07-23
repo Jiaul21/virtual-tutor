@@ -2,8 +2,8 @@ package com.jiaul.virtualtutor.entities.course;
 
 
 import com.jiaul.virtualtutor.entities.course.dto.CourseRequest;
-import com.jiaul.virtualtutor.entities.module.CourseModule;
-import com.jiaul.virtualtutor.entities.module.dto.CourseModuleRequest;
+import com.jiaul.virtualtutor.entities.course.dto.CourseResponse;
+import com.jiaul.virtualtutor.entities.student.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +22,7 @@ public class CourseService {
     creating course with list of courseModule
      */
     public Course createCourse(CourseRequest courseRequest) throws IOException {
-        Course course=new Course();
+        Course course = new Course();
         course.setTitle(courseRequest.getTitle());
         course.setImage(courseRequest.getImage());
         course.setType(courseRequest.getType());
@@ -32,7 +32,9 @@ public class CourseService {
         course.setPrice(courseRequest.getPrice());
         course.setOffer(courseRequest.getOffer());
         course.setPublishingDateTime(courseRequest.getPublishingDateTime());
-        if(course.getPublishingDateTime().before(new Date())){ course.setActive(true);}
+        if (course.getPublishingDateTime().before(new Date())) {
+            course.setActive(true);
+        }
 
         course.setCourseTeacher(courseRequest.getCourseTeacher());
 
@@ -56,13 +58,6 @@ public class CourseService {
 
     public Course buyCourse(int courseId, int studentId) {
         Course course = getCourseByID(courseId);
-//        UserProfile student = userProfileService.getUserProfileById(studentId);
-//        List<Course> buyCourses = student.getBuyCourses();
-////        List<UserProfile> students = course.getStudents();
-//        buyCourses.add(course);
-////        students.add(student);
-//        course = updateCourse(course);
-//        student = userProfileService.updateUserProfile(student);
         return course;
     }
 
@@ -78,13 +73,40 @@ public class CourseService {
         return courseRepository.findByType(type);
     }
 
-    public List<Course> getCourseByCategory(String category) {
-        return courseRepository.findByCategory(category);
-    }
+    public List<CourseResponse> getCourseByCategory(String category) {
+        System.out.println("category: " + category);
 
-//    public List<Course> getCourseByInstructor(UserProfile instructor) {
-//        return courseRepository.findByInstructor(instructor);
-//    }
+        List<CourseResponse> courseResponses = new ArrayList<>();
+        courseRepository.findByCategory(category).forEach(course -> {
+            if (course.isActive() && course.getPublishingDateTime().before(new Date())) {
+                CourseResponse courseResponse = new CourseResponse();
+                courseResponse.setId(course.getId());
+                courseResponse.setTitle(course.getTitle());
+                courseResponse.setImage(course.getImage());
+                courseResponse.setType(course.getType());
+                courseResponse.setCategory(course.getCategory());
+                courseResponse.setDuration(course.getDuration());
+                courseResponse.setDescription(course.getDescription());
+                courseResponse.setRating(course.getRating());
+                courseResponse.setPrice(course.getPrice());
+                courseResponse.setOffer(course.getOffer());
+                courseResponse.setPublishingDateTime(course.getPublishingDateTime());
+                courseResponse.setActive(course.isActive());
+
+                List<Student> students = new ArrayList<>();
+                course.getCourseStudents().forEach(student -> {
+                    Student student1 = new Student();
+                    student1.setId(student.getId());
+                    students.add(student1);
+                });
+                courseResponse.setCourseStudents(students);
+                courseResponse.setCourseTeacher(course.getCourseTeacher().getId());
+
+                courseResponses.add(courseResponse);
+            }
+        });
+        return courseResponses;
+    }
 
 
 }

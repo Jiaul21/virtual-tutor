@@ -26,6 +26,7 @@ public class Teacher extends CommonProfileInfo {
     @ElementCollection
     private List<String> skills;
     private String degree;
+    private int totalSell;
 
     @OneToOne
     private UserCredential userCredential;

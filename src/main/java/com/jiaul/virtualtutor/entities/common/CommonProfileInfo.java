@@ -21,5 +21,6 @@ public class CommonProfileInfo {
     private String country;
     private String city;
     private String bio;
+    private boolean isActive;
 
 }

@@ -1,8 +1,7 @@
 package com.jiaul.virtualtutor.entities.course;
 
 import com.jiaul.virtualtutor.entities.course.dto.CourseRequest;
-
-import jakarta.validation.Valid;
+import com.jiaul.virtualtutor.entities.course.dto.CourseResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,8 +22,8 @@ public class CourseController {
     }
 
     @GetMapping("/buy/{sid}/{cid}")
-    public ResponseEntity<Course> buyCourse(@PathVariable int sid, @PathVariable int cid){
-        return ResponseEntity.ok(courseService.buyCourse(cid,sid));
+    public ResponseEntity<Course> buyCourse(@PathVariable int sid, @PathVariable int cid) {
+        return ResponseEntity.ok(courseService.buyCourse(cid, sid));
     }
 
 //    @PatchMapping("/update")
@@ -36,16 +35,15 @@ public class CourseController {
     public ResponseEntity<Course> getCourseByID(@PathVariable int courseId) {
         return ResponseEntity.ok(courseService.getCourseByID(courseId));
     }
+
     @GetMapping("/{type}")
     public ResponseEntity<List<Course>> getCourseByType(@PathVariable String type) {
         return ResponseEntity.ok(courseService.getCourseByType(type));
     }
-    @GetMapping("/{category}")
-    public ResponseEntity<List<Course>> getCourseByCategory(@PathVariable String category) {
+
+    @GetMapping("/get/{category}")
+    public ResponseEntity<List<CourseResponse>> getCourseByCategory(@PathVariable String category) {
         return ResponseEntity.ok(courseService.getCourseByCategory(category));
     }
-//    @GetMapping("/{instructor}")
-//    public ResponseEntity<List<Course>> getCourseByInstructor(@PathVariable UserProfile instructor) {
-//        return ResponseEntity.ok(courseService.getCourseByInstructor(instructor));
-//    }
+
 }

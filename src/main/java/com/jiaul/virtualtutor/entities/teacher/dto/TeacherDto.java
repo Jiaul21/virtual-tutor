@@ -25,7 +25,10 @@ public class TeacherDto {
     private String bio;
     private String degree;
     private List<String> skills;
+    private int totalSell;
+    private boolean isActive;
 
     private UserCredential userCredential;
     private List<Course> sellCourses;
+
 }
