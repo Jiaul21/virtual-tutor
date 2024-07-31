@@ -1,6 +1,5 @@
 package com.jiaul.virtualtutor.authconfig;
 
-import com.jiaul.virtualtutor.enums.RoleEnum;
 import com.jiaul.virtualtutor.user.UserCredentialService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

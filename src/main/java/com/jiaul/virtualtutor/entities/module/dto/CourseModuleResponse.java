@@ -17,6 +17,7 @@ public class CourseModuleResponse {
     private Date publishingDateTime;
     private boolean isActive;
 
-    private int course;
+    private String courseTitle;
+    private String courseTeacher;
 
 }

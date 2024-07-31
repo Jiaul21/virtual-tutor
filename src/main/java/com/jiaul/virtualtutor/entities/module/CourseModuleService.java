@@ -56,7 +56,6 @@ public class CourseModuleService {
     public List<CourseModuleResponse> getAllModuleByCourseId(int id){
         System.out.println("course id: "+id);
 
-
         Course course=new Course();
         course.setId(id);
         List<CourseModuleResponse> courseModuleResponses=new ArrayList<>();
@@ -70,7 +69,8 @@ public class CourseModuleService {
             moduleResponse.setContentSource(module.getContentSource());
             moduleResponse.setPublishingDateTime(module.getPublishingDateTime());
             moduleResponse.setActive(module.isActive());
-            moduleResponse.setCourse(module.getCourse().getId());
+            moduleResponse.setCourseTitle(module.getCourse().getTitle());
+            moduleResponse.setCourseTeacher(module.getCourse().getCourseTeacher().getFirstName());
 
             courseModuleResponses.add(moduleResponse);
         });
