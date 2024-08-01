@@ -80,6 +80,14 @@ public class TeacherService {
         return courseResponses;
     }
 
+    public List<Teacher> getAllTeacher(){
+        return teacherRepository.findAll();
+    }
+
+    public int countTotalTeachers(){
+        return (int) teacherRepository.count();
+    }
+
 //    public byte[] updateProfilePhoto(MultipartFile file,int id) throws IOException {
 //        Teacher teacher= teacherRepository.findById(id).orElseThrow();
 //        teacher.setPhoto(file.getBytes());

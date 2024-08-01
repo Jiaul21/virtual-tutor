@@ -10,4 +10,6 @@ public interface CourseRepository extends JpaRepository<Course,Integer> {
 
     List<Course> findByCategory(String category);
 
+    long countByCategory(String category);
+
 }

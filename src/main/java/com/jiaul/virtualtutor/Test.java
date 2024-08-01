@@ -1,5 +1,7 @@
 package com.jiaul.virtualtutor;
 
+import com.jiaul.virtualtutor.entities.dashbord.DashboardService;
+
 import java.util.Arrays;
 import java.util.Base64;
 
@@ -26,17 +28,21 @@ public class Test {
 
     public static void main(String[] args) {
 
-        String path="D:/java spring/University/Backend/virtual-tutor/target/classes/files/pic/";
 
-        String b= Base64.getEncoder().encodeToString(path.getBytes());
+        DashboardService dashboardService=new DashboardService();
 
-        System.out.println(b);
-
-        String s= Arrays.toString(Base64.getDecoder().decode(b.toString()));
-
-
-        System.out.println("new String is: ");
-        System.out.println(s);
+        System.out.println(dashboardService.DisplayCount(1000));
+        System.out.println(dashboardService.DisplayCount(1001));
+        System.out.println(dashboardService.DisplayCount(1009));
+        System.out.println(dashboardService.DisplayCount(1010));
+        System.out.println(dashboardService.DisplayCount(1110));
+        System.out.println(dashboardService.DisplayCount(1111));
+        System.out.println(dashboardService.DisplayCount(1100));
+        System.out.println(dashboardService.DisplayCount(9999));
+        System.out.println(dashboardService.DisplayCount(10000));
+        System.out.println(dashboardService.DisplayCount(10001));
+        System.out.println(dashboardService.DisplayCount(10010));
+        System.out.println(dashboardService.DisplayCount(10999));
 
     }
 }

@@ -13,8 +13,9 @@ public class DashboardTeacherDto {
     private String language;
     private String country;
     private String city;
+    private boolean isActive;
+
     private int totalSell;
     private int totalCourse;
-    private boolean isActive;
     private int userCredential;
 }

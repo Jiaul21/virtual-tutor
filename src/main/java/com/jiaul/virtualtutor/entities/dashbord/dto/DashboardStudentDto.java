@@ -13,7 +13,7 @@ public class DashboardStudentDto {
     private String language;
     private String country;
     private String city;
-    private int totalEnrolledCourse;
     private boolean isActive;
+    private int totalEnrolledCourse;
     private int userCredential;
 }

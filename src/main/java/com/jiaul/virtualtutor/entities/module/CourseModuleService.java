@@ -81,4 +81,8 @@ public class CourseModuleService {
          courseModuleRepository.deleteById(id);
          return "Deleted courseModuleId: "+id;
     }
+
+    public int countTotalModules(){
+        return (int) courseModuleRepository.count();
+    }
 }

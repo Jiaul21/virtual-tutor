@@ -73,6 +73,14 @@ public class CourseService {
         return courseRepository.findByType(type);
     }
 
+    public List<Course> getAllCourse(){
+        return courseRepository.findAll();
+    }
+
+    public int countTotalCoursesByCategory(String category){
+        return (int) courseRepository.countByCategory(category);
+    }
+
     public List<CourseResponse> getCourseByCategory(String category) {
         System.out.println("category: " + category);
 
