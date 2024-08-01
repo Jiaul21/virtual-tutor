@@ -5,6 +5,7 @@ import com.jiaul.virtualtutor.entities.dashbord.dto.DashboardCourseDto;
 import com.jiaul.virtualtutor.entities.dashbord.dto.DashboardStudentDto;
 import com.jiaul.virtualtutor.entities.dashbord.dto.DashboardTeacherDto;
 import com.jiaul.virtualtutor.entities.dashbord.dto.TotalCount;
+import com.jiaul.virtualtutor.entities.discussion.DiscussionService;
 import com.jiaul.virtualtutor.entities.module.CourseModuleService;
 import com.jiaul.virtualtutor.entities.student.StudentService;
 import com.jiaul.virtualtutor.entities.teacher.TeacherService;
@@ -26,6 +27,8 @@ public class DashboardService {
     private CourseService courseService;
     @Autowired
     private CourseModuleService moduleService;
+    @Autowired
+    private DiscussionService discussionService;
 
 
     public List<DashboardTeacherDto> getTeachersInfo() {
@@ -55,7 +58,7 @@ public class DashboardService {
 
         studentService.getAllStudent().forEach(student -> {
             DashboardStudentDto studentDto = new DashboardStudentDto();
-            studentDto.setId(studentDto.getId());
+            studentDto.setId(student.getId());
             studentDto.setFirstName(student.getFirstName());
             studentDto.setLastName(student.getLastName());
             studentDto.setPhoto(student.getPhoto());
@@ -101,6 +104,7 @@ public class DashboardService {
         totalCount.setTotalModules(displayCount(moduleService.countTotalModules()));
         totalCount.setTotalAcademicCourses(displayCount(courseService.countTotalCoursesByCategory(CourseCategory.ACADEMIC.toString())));
         totalCount.setTotalSkillCourses(displayCount(courseService.countTotalCoursesByCategory(CourseCategory.SKILL.toString())));
+        totalCount.setTotalDiscussions(displayCount(discussionService.countTotalDiscussion()));
 
         return totalCount;
     }

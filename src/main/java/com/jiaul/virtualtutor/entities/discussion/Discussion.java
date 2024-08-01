@@ -2,6 +2,7 @@ package com.jiaul.virtualtutor.entities.discussion;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.jiaul.virtualtutor.entities.module.CourseModule;
 import com.jiaul.virtualtutor.entities.student.Student;
 import com.jiaul.virtualtutor.entities.teacher.Teacher;
 import jakarta.persistence.*;
@@ -18,17 +19,18 @@ public class Discussion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String comment;
+    private String message;
     private String image;
     private Date dateTime;
     private int vote;
+    private int senderId;
+    private String senderRole;
 
-    @OneToOne
-    private Student student;
+    @ManyToOne
+    @JoinColumn(name = "module_id")
+    private CourseModule courseModule;
 
-    @OneToOne
-    private Teacher teacher;
-
-    @OneToMany(cascade = CascadeType.ALL)
+    private int parentMessageId;        // parentMessageId 0 for root message
+    @OneToMany
     private List<Discussion> replies;
 }

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.jiaul.virtualtutor.entities.assessment.assignment.Assignment;
 import com.jiaul.virtualtutor.entities.assessment.mcqtest.McqTest;
 import com.jiaul.virtualtutor.entities.course.Course;
+import com.jiaul.virtualtutor.entities.discussion.Discussion;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -32,9 +33,13 @@ public class CourseModule {
     @JoinColumn(name = "course_id")
     private Course course;
 
-    @OneToMany(mappedBy = "courseModule", cascade = CascadeType.ALL)
-    private List<Assignment> assignments;
+    @OneToMany(mappedBy = "courseModule",cascade = CascadeType.ALL)
+    private List<Discussion> discussions;
 
-    @OneToOne
-    private McqTest mcqTest;
+
+//    @OneToMany(mappedBy = "courseModule", cascade = CascadeType.ALL)
+//    private List<Assignment> assignments;
+//
+//    @OneToOne
+//    private McqTest mcqTest;
 }

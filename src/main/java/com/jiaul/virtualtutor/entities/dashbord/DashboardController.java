@@ -34,7 +34,7 @@ public class DashboardController {
     }
 
     @GetMapping("/get/home")
-    public ResponseEntity<TotalCount> getAllTeacherInfo(){
+    public ResponseEntity<TotalCount> getTotalCountInfo(){
         return ResponseEntity.ok(dashboardService.getTotaLCount());
     }
 }

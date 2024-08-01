@@ -10,4 +10,5 @@ public class TotalCount {
     private String totalModules;
     private String totalAcademicCourses;
     private String totalSkillCourses;
+    private String totalDiscussions;
 }
