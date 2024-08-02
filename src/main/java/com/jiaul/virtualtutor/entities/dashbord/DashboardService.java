@@ -39,6 +39,7 @@ public class DashboardService {
             teacherDto.setId(teacher.getId());
             teacherDto.setFirstName(teacher.getFirstName());
             teacherDto.setLastName(teacherDto.getLastName());
+            teacherDto.setEmail(teacher.getUserCredential().getEmail());
             teacherDto.setPhoto(teacher.getPhoto());
             teacherDto.setLanguage(teacher.getLanguage());
             teacherDto.setCountry(teacher.getCountry());
@@ -61,6 +62,7 @@ public class DashboardService {
             studentDto.setId(student.getId());
             studentDto.setFirstName(student.getFirstName());
             studentDto.setLastName(student.getLastName());
+            studentDto.setEmail(student.getUserCredential().getEmail());
             studentDto.setPhoto(student.getPhoto());
             studentDto.setLanguage(student.getLanguage());
             studentDto.setCountry(student.getCountry());

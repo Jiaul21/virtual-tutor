@@ -8,6 +8,7 @@ import com.jiaul.virtualtutor.entities.module.dto.CourseModuleResponse;
 import com.jiaul.virtualtutor.entities.task.Task;
 import com.jiaul.virtualtutor.entities.task.TaskService;
 import com.jiaul.virtualtutor.enums.CourseContent;
+import com.jiaul.virtualtutor.scheduler.Scheduler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,8 @@ public class CourseModuleService {
 
     @Autowired
     private TaskService taskService;
+    @Autowired
+    private Scheduler scheduler;
 
 
     public CourseModule addCourseModule(CourseModuleRequest courseModuleRequest) throws IOException {
@@ -36,30 +39,32 @@ public class CourseModuleService {
         courseModule.setThumbnail(courseModuleRequest.getThumbnail());
         courseModule.setContentName(courseModuleRequest.getContentName());
 
-        String fileType=courseModule.getContentName().substring(courseModule.getContentName().lastIndexOf('.'));
-        if(fileType.equals(".mp4") || fileType.equals(".mkv")) courseModule.setContentType(CourseContent.VIDEO.toString());
-        else if(fileType.equals(".pdf")) courseModule.setContentType(CourseContent.PDF.toString());
-        else if(fileType.equals(".ppt")) courseModule.setContentType(CourseContent.PPT.toString());
-        else if(fileType.equals(".docx")) courseModule.setContentType(CourseContent.DOC.toString());
+        String fileType = courseModule.getContentName().substring(courseModule.getContentName().lastIndexOf('.'));
+        if (fileType.equals(".mp4") || fileType.equals(".mkv"))
+            courseModule.setContentType(CourseContent.VIDEO.toString());
+        else if (fileType.equals(".pdf")) courseModule.setContentType(CourseContent.PDF.toString());
+        else if (fileType.equals(".ppt")) courseModule.setContentType(CourseContent.PPT.toString());
+        else if (fileType.equals(".docx")) courseModule.setContentType(CourseContent.DOC.toString());
 
         courseModule.setContentSource(courseModuleRequest.getContentSource());
         courseModule.setPublishingDateTime(courseModuleRequest.getPublishingDateTime());
         courseModule.setActive(true);
 
-        Course course= courseService.getCourseByID(courseModuleRequest.getCourse().getId());
-        if(course.getCourseModules().isEmpty()) course.setActive(true);
-        course=courseService.updateCourse(course);
+        Course course = courseService.getCourseByID(courseModuleRequest.getCourse().getId());
+        if (course.getCourseModules().isEmpty()) course.setActive(true);
+        course = courseService.updateCourse(course);
 
         courseModule.setCourse(course);
-        courseModule= courseModuleRepository.save(courseModule);
-        if(courseModule.getPublishingDateTime().after(new Date())) {
-            Task task =new Task();
-            task.setTaskType("ADD_MODULE_NOTIFY");
-            task.setDone(false);
-            task.setDateTime(courseModule.getPublishingDateTime());
-            task.setCourseModule(courseModule);
-            taskService.createTask(task);
-        }
+        courseModule = courseModuleRepository.save(courseModule);
+
+        Task task = new Task();
+        task.setTaskType("ADD_MODULE_NOTIFY");
+        task.setDone(false);
+        task.setDateTime(courseModule.getPublishingDateTime());
+        task.setCourseModule(courseModule);
+        taskService.createTask(task);
+        scheduler.setChanged(true);
+
         return courseModule;
     }
 
@@ -67,15 +72,15 @@ public class CourseModuleService {
         return courseModuleRepository.findById(id).orElseThrow();
     }
 
-    public List<CourseModuleResponse> getAllModuleByCourseId(int id){
-        System.out.println("course id: "+id);
+    public List<CourseModuleResponse> getAllModuleByCourseId(int id) {
+        System.out.println("course id: " + id);
 
-        Course course=new Course();
+        Course course = new Course();
         course.setId(id);
-        List<CourseModuleResponse> courseModuleResponses=new ArrayList<>();
-        courseModuleRepository.findAllByCourse(course).forEach(module ->{
-            if (module.isActive() && module.getPublishingDateTime().before(new Date())){
-                CourseModuleResponse moduleResponse=new CourseModuleResponse();
+        List<CourseModuleResponse> courseModuleResponses = new ArrayList<>();
+        courseModuleRepository.findAllByCourse(course).forEach(module -> {
+            if (module.isActive() && module.getPublishingDateTime().before(new Date())) {
+                CourseModuleResponse moduleResponse = new CourseModuleResponse();
                 moduleResponse.setId(module.getId());
                 moduleResponse.setName(module.getName());
                 moduleResponse.setThumbnail(module.getThumbnail());
@@ -93,12 +98,12 @@ public class CourseModuleService {
         return courseModuleResponses;
     }
 
-    public String deleteCourseModuleById(int id){
-         courseModuleRepository.deleteById(id);
-         return "Deleted courseModuleId: "+id;
+    public String deleteCourseModuleById(int id) {
+        courseModuleRepository.deleteById(id);
+        return "Deleted courseModuleId: " + id;
     }
 
-    public int countTotalModules(){
+    public int countTotalModules() {
         return (int) courseModuleRepository.count();
     }
 }

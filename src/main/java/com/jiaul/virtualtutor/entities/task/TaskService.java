@@ -13,7 +13,7 @@ public class TaskService {
     private TaskRepository taskRepository;
 
     public List<Task> getAllIncompleteTask(){
-        return taskRepository.findAllByIsDoneByDateTimeAsc(false);
+        return taskRepository.findAllByIsDoneOrderByDateTimeAsc(false);
     }
 
     public Task createTask(Task task){ return taskRepository.save(task); }

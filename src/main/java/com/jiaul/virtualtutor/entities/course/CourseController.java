@@ -32,11 +32,11 @@ public class CourseController {
 //    }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Course> getCourseByID(@PathVariable int courseId) {
-        return ResponseEntity.ok(courseService.getCourseByID(courseId));
+    public ResponseEntity<Course> getCourseByID(@PathVariable int id) {
+        return ResponseEntity.ok(courseService.getCourseByID(id));
     }
 
-    @GetMapping("/{type}")
+    @GetMapping("/get/{type}")
     public ResponseEntity<List<Course>> getCourseByType(@PathVariable String type) {
         return ResponseEntity.ok(courseService.getCourseByType(type));
     }

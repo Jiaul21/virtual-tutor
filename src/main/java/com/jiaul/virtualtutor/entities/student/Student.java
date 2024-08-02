@@ -25,5 +25,9 @@ public class Student extends CommonProfileInfo {
     private UserCredential userCredential;
 
     @ManyToMany
+    @JoinTable(
+            name = "student_courses",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id"))
     private List<Course> buyCourses;
 }

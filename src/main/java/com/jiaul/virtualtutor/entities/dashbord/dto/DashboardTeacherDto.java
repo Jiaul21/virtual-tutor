@@ -8,6 +8,7 @@ public class DashboardTeacherDto {
     private int id;
     private String firstName;
     private String lastName;
+    private String email;
     private String photo;
     private String gender;
     private String language;
