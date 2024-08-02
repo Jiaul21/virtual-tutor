@@ -5,6 +5,8 @@ import com.jiaul.virtualtutor.entities.course.Course;
 import com.jiaul.virtualtutor.entities.course.CourseService;
 import com.jiaul.virtualtutor.entities.module.dto.CourseModuleRequest;
 import com.jiaul.virtualtutor.entities.module.dto.CourseModuleResponse;
+import com.jiaul.virtualtutor.entities.task.Task;
+import com.jiaul.virtualtutor.entities.task.TaskService;
 import com.jiaul.virtualtutor.enums.CourseContent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,9 @@ public class CourseModuleService {
     @Autowired
     private CourseService courseService;
 
+    @Autowired
+    private TaskService taskService;
+
 
     public CourseModule addCourseModule(CourseModuleRequest courseModuleRequest) throws IOException {
         CourseModule courseModule = new CourseModule();
@@ -39,14 +44,23 @@ public class CourseModuleService {
 
         courseModule.setContentSource(courseModuleRequest.getContentSource());
         courseModule.setPublishingDateTime(courseModuleRequest.getPublishingDateTime());
-        if(courseModule.getPublishingDateTime().before(new Date())){ courseModule.setActive(true);}
+        courseModule.setActive(true);
 
         Course course= courseService.getCourseByID(courseModuleRequest.getCourse().getId());
-        if(!course.isActive() && course.getPublishingDateTime().before(new Date())) course.setActive(true);
+        if(course.getCourseModules().isEmpty()) course.setActive(true);
         course=courseService.updateCourse(course);
 
         courseModule.setCourse(course);
-        return courseModuleRepository.save(courseModule);
+        courseModule= courseModuleRepository.save(courseModule);
+        if(courseModule.getPublishingDateTime().after(new Date())) {
+            Task task =new Task();
+            task.setTaskType("ADD_MODULE_NOTIFY");
+            task.setDone(false);
+            task.setDateTime(courseModule.getPublishingDateTime());
+            task.setCourseModule(courseModule);
+            taskService.createTask(task);
+        }
+        return courseModule;
     }
 
     public CourseModule getCourseModuleById(int id) {
@@ -60,19 +74,21 @@ public class CourseModuleService {
         course.setId(id);
         List<CourseModuleResponse> courseModuleResponses=new ArrayList<>();
         courseModuleRepository.findAllByCourse(course).forEach(module ->{
-            CourseModuleResponse moduleResponse=new CourseModuleResponse();
-            moduleResponse.setId(module.getId());
-            moduleResponse.setName(module.getName());
-            moduleResponse.setThumbnail(module.getThumbnail());
-            moduleResponse.setContentType(moduleResponse.getContentType());
-            moduleResponse.setContentName(module.getContentName());
-            moduleResponse.setContentSource(module.getContentSource());
-            moduleResponse.setPublishingDateTime(module.getPublishingDateTime());
-            moduleResponse.setActive(module.isActive());
-            moduleResponse.setCourseTitle(module.getCourse().getTitle());
-            moduleResponse.setCourseTeacher(module.getCourse().getCourseTeacher().getFirstName());
+            if (module.isActive() && module.getPublishingDateTime().before(new Date())){
+                CourseModuleResponse moduleResponse=new CourseModuleResponse();
+                moduleResponse.setId(module.getId());
+                moduleResponse.setName(module.getName());
+                moduleResponse.setThumbnail(module.getThumbnail());
+                moduleResponse.setContentType(moduleResponse.getContentType());
+                moduleResponse.setContentName(module.getContentName());
+                moduleResponse.setContentSource(module.getContentSource());
+                moduleResponse.setPublishingDateTime(module.getPublishingDateTime());
+                moduleResponse.setActive(module.isActive());
+                moduleResponse.setCourseTitle(module.getCourse().getTitle());
+                moduleResponse.setCourseTeacher(module.getCourse().getCourseTeacher().getFirstName());
 
-            courseModuleResponses.add(moduleResponse);
+                courseModuleResponses.add(moduleResponse);
+            }
         });
         return courseModuleResponses;
     }

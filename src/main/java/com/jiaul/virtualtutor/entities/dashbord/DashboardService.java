@@ -32,7 +32,7 @@ public class DashboardService {
 
 
     public List<DashboardTeacherDto> getTeachersInfo() {
-        List<DashboardTeacherDto> dashboardTeacherDtos = new ArrayList<>();
+        List<DashboardTeacherDto> dashboardTeacherDtosList = new ArrayList<>();
 
         teacherService.getAllTeacher().forEach(teacher -> {
             DashboardTeacherDto teacherDto = new DashboardTeacherDto();
@@ -48,13 +48,13 @@ public class DashboardService {
             teacherDto.setTotalSell(teacher.getTotalSell());
             teacherDto.setUserCredential(teacher.getUserCredential().getId());
 
-            dashboardTeacherDtos.add(teacherDto);
+            dashboardTeacherDtosList.add(teacherDto);
         });
-        return dashboardTeacherDtos;
+        return dashboardTeacherDtosList;
     }
 
     public List<DashboardStudentDto> getStudentsInfo() {
-        List<DashboardStudentDto> dashboardStudentDtos = new ArrayList<>();
+        List<DashboardStudentDto> dashboardStudentDtoList = new ArrayList<>();
 
         studentService.getAllStudent().forEach(student -> {
             DashboardStudentDto studentDto = new DashboardStudentDto();
@@ -69,13 +69,13 @@ public class DashboardService {
             studentDto.setTotalEnrolledCourse(student.getBuyCourses().size());
             studentDto.setUserCredential(student.getUserCredential().getId());
 
-            dashboardStudentDtos.add(studentDto);
+            dashboardStudentDtoList.add(studentDto);
         });
-        return dashboardStudentDtos;
+        return dashboardStudentDtoList;
     }
 
     public List<DashboardCourseDto> getCoursesInfo() {
-        List<DashboardCourseDto> dashboardCourseDtos = new ArrayList<>();
+        List<DashboardCourseDto> dashboardCourseDtoList = new ArrayList<>();
 
         courseService.getAllCourse().forEach(course -> {
             DashboardCourseDto courseDto = new DashboardCourseDto();
@@ -92,9 +92,9 @@ public class DashboardService {
             courseDto.setActive(course.isActive());
             courseDto.setTotalStudents(course.getCourseStudents().size());
 
-            dashboardCourseDtos.add(courseDto);
+            dashboardCourseDtoList.add(courseDto);
         });
-        return dashboardCourseDtos;
+        return dashboardCourseDtoList;
     }
 
     public TotalCount getTotaLCount() {

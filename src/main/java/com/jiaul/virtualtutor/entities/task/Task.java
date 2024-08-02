@@ -16,20 +16,11 @@ public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    private String scheduleType;
+    private String taskType;
     private Date dateTime;
     private boolean isDone;
 
     @OneToOne
-    private Course course;
-
-    @OneToOne
     private CourseModule courseModule;
-
-    @OneToOne
-    private Assignment assignmentTimeStart;
-
-    @OneToOne
-    private McqTest mcqTimeStart;
 
 }

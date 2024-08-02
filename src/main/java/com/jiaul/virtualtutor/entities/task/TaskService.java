@@ -12,8 +12,13 @@ public class TaskService {
     @Autowired
     private TaskRepository taskRepository;
 
-    public List<Task> getAllTask(){
-        return taskRepository.findAll();
+    public List<Task> getAllIncompleteTask(){
+        return taskRepository.findAllByIsDoneByDateTimeAsc(false);
+    }
+
+    public Task createTask(Task task){ return taskRepository.save(task); }
+    public Task updateTask(Task task){
+        return taskRepository.save(task);
     }
 
     public Optional<Task> getTaskById(long id){

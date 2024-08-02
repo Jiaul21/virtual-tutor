@@ -32,27 +32,9 @@ public class CourseService {
         course.setPrice(courseRequest.getPrice());
         course.setOffer(courseRequest.getOffer());
         course.setPublishingDateTime(courseRequest.getPublishingDateTime());
-        if (course.getPublishingDateTime().before(new Date())) {
-            course.setActive(true);
-        }
-
+        course.setActive(false);
         course.setCourseTeacher(courseRequest.getCourseTeacher());
 
-//        List<CourseModule> courseModules = new ArrayList<>();
-//        for (CourseModuleRequest courseModuleRequest : courseRequest.getCourseModuleRequests()) {
-//            CourseModule courseModule = new CourseModule();
-//            courseModule.setName(courseModuleRequest.getName());
-//            courseModule.setTopics(courseModuleRequest.getTopics());
-//            courseModule.setThumbnail(courseModuleRequest.getThumbnail());
-//            courseModule.setContentType(courseModuleRequest.getContentType());
-//            courseModule.setContentName(courseModuleRequest.getContentName());
-//            courseModule.setContentSource(courseModuleRequest.getContentSource());
-//            courseModule.setPublishingDateTime(courseModuleRequest.getPublishingDateTime());
-//            if(courseModule.getPublishingDateTime().before(new Date())){ courseModule.setActive(true);}
-//            courseModule.setCourse(course);
-//
-//            courseModules.add(courseModule);
-//        }
         return courseRepository.save(course);
     }
 
@@ -73,9 +55,7 @@ public class CourseService {
         return courseRepository.findByType(type);
     }
 
-    public List<Course> getAllCourse(){
-        return courseRepository.findAll();
-    }
+    public List<Course> getAllCourse(){ return courseRepository.findAll(); }
 
     public int countTotalCoursesByCategory(String category){
         return (int) courseRepository.countByCategory(category);

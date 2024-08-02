@@ -43,9 +43,7 @@ public class DiscussionService {
             discussionDto.setCourseModuleId(discussion.getCourseModule().getId());
             discussionDto.setParentMessageId(discussion.getParentMessageId());
 
-//            List<DiscussionDto> replies=new ArrayList<>();
-//            replies=mapDiscussionlistToDiscussionDtoList(discussion.getReplies());
-            discussionDto.setReplies(mapDiscussionlistToDiscussionDtoList(discussion.getReplies()));
+            discussionDto.setReplies(mapDiscussionlistToDiscussionDtoList(discussion.getReplies())); // recursive call for replies
 
             discussionDtoList.add(discussionDto);
         });
