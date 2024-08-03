@@ -2,6 +2,7 @@ package com.jiaul.virtualtutor.authconfig;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import lombok.Data;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +15,7 @@ import java.util.HashMap;
 import java.util.function.Function;
 
 @Component
+@Data
 public class JwtService {
 
     private static final long EXPIRATION_TIME = 24*60*60*1000;
@@ -50,7 +52,7 @@ public class JwtService {
         return extractClaims(token, Claims::getExpiration).before(new Date());
     }
 
-    public String getExpirationTime() {
-        return String.valueOf(EXPIRATION_TIME);
+    public static Date getExpirationTime() {
+        return new Date(System.currentTimeMillis() + EXPIRATION_TIME);
     }
 }

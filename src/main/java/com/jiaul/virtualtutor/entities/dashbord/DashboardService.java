@@ -10,6 +10,9 @@ import com.jiaul.virtualtutor.entities.module.CourseModuleService;
 import com.jiaul.virtualtutor.entities.student.StudentService;
 import com.jiaul.virtualtutor.entities.teacher.TeacherService;
 import com.jiaul.virtualtutor.enums.CourseCategory;
+import com.jiaul.virtualtutor.fileserver.FileService;
+import com.jiaul.virtualtutor.user.UserCredential;
+import com.jiaul.virtualtutor.user.UserCredentialService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +32,10 @@ public class DashboardService {
     private CourseModuleService moduleService;
     @Autowired
     private DiscussionService discussionService;
+    @Autowired
+    private FileService fileService;
+    @Autowired
+    private UserCredentialService userCredentialService;
 
 
     public List<DashboardTeacherDto> getTeachersInfo() {
@@ -40,7 +47,7 @@ public class DashboardService {
             teacherDto.setFirstName(teacher.getFirstName());
             teacherDto.setLastName(teacherDto.getLastName());
             teacherDto.setEmail(teacher.getUserCredential().getEmail());
-            teacherDto.setPhoto(teacher.getPhoto());
+            teacherDto.setPhoto(fileService.getBase64(teacher.getPhoto()));
             teacherDto.setLanguage(teacher.getLanguage());
             teacherDto.setCountry(teacher.getCountry());
             teacherDto.setCity(teacher.getCity());
@@ -63,7 +70,7 @@ public class DashboardService {
             studentDto.setFirstName(student.getFirstName());
             studentDto.setLastName(student.getLastName());
             studentDto.setEmail(student.getUserCredential().getEmail());
-            studentDto.setPhoto(student.getPhoto());
+            studentDto.setPhoto(fileService.getBase64(student.getPhoto()));
             studentDto.setLanguage(student.getLanguage());
             studentDto.setCountry(student.getCountry());
             studentDto.setCity(student.getCity());
@@ -120,6 +127,10 @@ public class DashboardService {
             else return String.valueOf(count);
         }
         return String.valueOf(count);
+    }
+
+    public String updateUserCredentialActiveStatus(String email,boolean enabled){
+        return userCredentialService.updateActiveStatus(email,enabled);
     }
 
 }

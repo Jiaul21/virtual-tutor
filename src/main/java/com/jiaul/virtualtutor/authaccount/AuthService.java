@@ -44,6 +44,7 @@ public class AuthService {
     providing login access and updating JWT
      */
     public AuthResponse logIn(LoginRequest loginRequest) {
+        System.out.println(loginRequest);
         AuthResponse authResponse = new AuthResponse();
         try {
             UserCredential userCredential = (UserCredential) authenticationManager.authenticate(
@@ -155,6 +156,7 @@ public class AuthService {
         authResponse.setMessage(message);
         authResponse.setJwtToken(jwtToken.getTokenValue());
         authResponse.setJwtTokenType(jwtToken.getTokenType());
+        authResponse.setTokenExpireTime(JwtService.getExpirationTime());
         return authResponse;
     }
 }

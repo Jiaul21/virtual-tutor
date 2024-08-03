@@ -1,12 +1,15 @@
 package com.jiaul.virtualtutor.user;
 
+import com.jiaul.virtualtutor.authconfig.JwtService;
 import com.jiaul.virtualtutor.customexception.UserNotFoundException;
+import com.jiaul.virtualtutor.entities.jwt.JwtTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -14,10 +17,11 @@ import java.util.Optional;
 public class UserCredentialService implements UserDetailsService {
 
     @Autowired
-    UserCredentialRepository userCredentialRepository;
+    private UserCredentialRepository userCredentialRepository;
+    @Autowired
+    private JwtTokenService jwtTokenService;
 
     public UserCredential createUserCredential(UserCredential userCredential){
-        System.out.println("-------------------------------------- 1 --------------------");
         return userCredentialRepository.save(userCredential);
     }
 
@@ -40,5 +44,13 @@ public class UserCredentialService implements UserDetailsService {
 
     public ResponseEntity<Optional<UserCredential>> getAllUser() {
         return (ResponseEntity<Optional<UserCredential>>) userCredentialRepository.findAll();
+    }
+
+    @Transactional
+    public String updateActiveStatus(String email, boolean enabled){
+        if(userCredentialRepository.updateEnabledByEmail(enabled,email)==1){
+            return "SUCCESS";
+        }
+        return "FAILED";
     }
 }

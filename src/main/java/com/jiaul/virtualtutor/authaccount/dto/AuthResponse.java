@@ -2,6 +2,8 @@ package com.jiaul.virtualtutor.authaccount.dto;
 
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class AuthResponse {
 
@@ -13,4 +15,5 @@ public class AuthResponse {
     private String message;
     private String jwtToken;
     private String jwtTokenType;
+    private Date tokenExpireTime;
 }
