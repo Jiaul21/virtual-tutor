@@ -23,4 +23,7 @@ public class Task {
     @OneToOne
     private CourseModule courseModule;
 
+    @OneToOne
+    private Course course;
+
 }

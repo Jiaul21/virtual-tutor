@@ -2,6 +2,7 @@ package com.jiaul.virtualtutor.entities.course;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.jiaul.virtualtutor.entities.meeting.Meeting;
 import com.jiaul.virtualtutor.entities.module.CourseModule;
 import com.jiaul.virtualtutor.entities.student.Student;
 import com.jiaul.virtualtutor.entities.teacher.Teacher;
@@ -39,4 +40,7 @@ public class Course {
 
     @ManyToOne
     private Teacher courseTeacher;
+
+    @OneToOne
+    private Meeting meeting;
 }

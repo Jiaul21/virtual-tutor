@@ -8,28 +8,14 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 @Service
 public class EmailService {
 
     @Autowired
-    private JavaMailSender javaMailSender;
-
-    public boolean sendEmail(String toEmail, String subject, String body){
-        try{
-            MimeMessage message = javaMailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-            helper.setTo(toEmail);
-//            helper.setFrom("studysupport@demomailtrap.com");
-            helper.setFrom("studysupport@gmail.com");
-            helper.setSubject(subject);
-            helper.setText(body, true);  // true indicates the content is HTML
-            javaMailSender.send(message);
-        }catch (MessagingException e){
-            System.out.println("error message: "+e.getMessage());
-            return false;
-        }
-        return true;
-    }
+    private EmailSender emailSender;
 
     public String emailForAddModule(String toEmail,String studentName,
                                  String courseTitle,String moduleName,String moduleTopic,String courseTeacher) {
@@ -56,9 +42,37 @@ public class EmailService {
                 + "Virtual-Tutor<br>"
                 + "</body>"
                 + "</html>";
-        if(sendEmail(toEmail,subject,addModuleEmailContent)){
+        if(emailSender.sendEmail(toEmail,subject,addModuleEmailContent)){
             return "SUCCESS";
         }
         return "FAILED";
     }
+
+    public String emailForCourseMeeting(String toEmail, String studentName,
+                                        String courseTitle, Date meetingTime, String courseTeacher) {
+        String subject="Meeting Schedule for " +courseTitle+"!";
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, MMMM d, yyyy 'at' h:mm a");
+        String formattedMeetingTime = dateFormat.format(meetingTime);
+
+        String meetingScheduleContent = "<html>"
+                + "<body>"
+                + "Dear " + studentName + ",<br><br>"
+                + "We are pleased to inform you about the upcoming meeting for your course, <b>" + courseTitle + "</b>.<br><br>"
+                + "<b>Meeting Details:</b><br>"
+                + "Date and Time: " + formattedMeetingTime + "<br>"
+                + "Instructor: " + courseTeacher + "<br><br>"
+                + "We look forward to your participation.<br><br>"
+                + "Best regards,<br>"
+                + courseTeacher + "<br>"
+                + "Course Instructor"
+                + "</body>"
+                + "</html>";
+
+        if(emailSender.sendEmail(toEmail,subject,meetingScheduleContent)){
+            return "SUCCESS";
+        }
+        return "FAILED";
+    }
+
+
 }

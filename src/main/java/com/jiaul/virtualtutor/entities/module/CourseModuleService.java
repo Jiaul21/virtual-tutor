@@ -8,6 +8,7 @@ import com.jiaul.virtualtutor.entities.module.dto.CourseModuleResponse;
 import com.jiaul.virtualtutor.entities.task.Task;
 import com.jiaul.virtualtutor.entities.task.TaskService;
 import com.jiaul.virtualtutor.enums.CourseContent;
+import com.jiaul.virtualtutor.enums.TaskType;
 import com.jiaul.virtualtutor.scheduler.Scheduler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,7 +59,7 @@ public class CourseModuleService {
         courseModule = courseModuleRepository.save(courseModule);
 
         Task task = new Task();
-        task.setTaskType("ADD_MODULE_NOTIFY");
+        task.setTaskType(TaskType.ADD_MODULE_NOTIFY.toString());
         task.setDone(false);
         task.setDateTime(courseModule.getPublishingDateTime());
         task.setCourseModule(courseModule);
