@@ -33,9 +33,6 @@ public class CourseModule {
     @JoinColumn(name = "course_id")
     private Course course;
 
-    @OneToMany(mappedBy = "courseModule",cascade = CascadeType.ALL)
-    private List<Discussion> discussions;
-
 
 //    @OneToMany(mappedBy = "courseModule", cascade = CascadeType.ALL)
 //    private List<Assignment> assignments;

@@ -30,8 +30,8 @@ public class DashboardService {
     private CourseService courseService;
     @Autowired
     private CourseModuleService moduleService;
-    @Autowired
-    private DiscussionService discussionService;
+//    @Autowired
+//    private DiscussionService discussionService;
     @Autowired
     private FileService fileService;
     @Autowired
@@ -113,7 +113,7 @@ public class DashboardService {
         totalCount.setTotalModules(displayCount(moduleService.countTotalModules()));
         totalCount.setTotalAcademicCourses(displayCount(courseService.countTotalCoursesByCategory(CourseCategory.ACADEMIC.toString())));
         totalCount.setTotalSkillCourses(displayCount(courseService.countTotalCoursesByCategory(CourseCategory.SKILL.toString())));
-        totalCount.setTotalDiscussions(displayCount(discussionService.countTotalDiscussion()));
+//        totalCount.setTotalDiscussions(displayCount(discussionService.countTotalDiscussion()));
 
         return totalCount;
     }

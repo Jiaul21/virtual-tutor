@@ -2,7 +2,6 @@ package com.jiaul.virtualtutor.entities.discussion;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import com.jiaul.virtualtutor.entities.module.CourseModule;
 import com.jiaul.virtualtutor.entities.student.Student;
 import com.jiaul.virtualtutor.entities.teacher.Teacher;
 import jakarta.persistence.*;
@@ -23,14 +22,19 @@ public class Discussion {
     private String image;
     private Date dateTime;
     private int vote;
-    private int senderId;
-    private String senderRole;
+
+//    private int parentMessageId;        // parentMessageId 0 for root message
+    private int courseModuleId;
 
     @ManyToOne
-    @JoinColumn(name = "module_id")
-    private CourseModule courseModule;
+    private Teacher teacher;
 
-    private int parentMessageId;        // parentMessageId 0 for root message
-    @OneToMany
+    @ManyToOne
+    private Student student;
+
+    @ManyToOne
+    private  Discussion parentMessage;
+
+    @OneToMany(mappedBy = "parentMessage",cascade = CascadeType.ALL)
     private List<Discussion> replies;
 }

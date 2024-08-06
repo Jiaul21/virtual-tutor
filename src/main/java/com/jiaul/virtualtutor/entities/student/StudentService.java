@@ -20,8 +20,8 @@ public class StudentService {
         return studentRepository.save(student);
     }
 
-    public Optional<Student> getStudentById(int id){
-        return studentRepository.findById(id);
+    public Student getStudentById(int id){
+        return studentRepository.findById(id).orElseThrow();
     }
 
     public List<Student> getAllStudent(){

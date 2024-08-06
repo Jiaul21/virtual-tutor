@@ -17,12 +17,14 @@ public class DiscussionDto {
     private String image;
     private Date dateTime;
     private int vote;
-    private int senderId;
-    private String senderRole;
 
-
-    private int courseModuleId;
     private int parentMessageId;        // parentMessageId 0 for root message
+    private int courseModuleId;
+
+    private int senderId;
+    private String senderName;
+    private String senderRole;
+    private String senderPhoto;
 
     private List<DiscussionDto> replies;
 }

@@ -21,7 +21,7 @@ public class DiscussionController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<Discussion> createDiscussion(@RequestBody Discussion discussion){
-        return ResponseEntity.ok(discussionService.createDiscussion(discussion));
+    public ResponseEntity<DiscussionDto> createDiscussion(@RequestBody DiscussionDto discussionDto){
+        return ResponseEntity.ok(discussionService.createDiscussion(discussionDto));
     }
 }

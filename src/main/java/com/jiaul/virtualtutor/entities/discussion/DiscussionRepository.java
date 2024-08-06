@@ -10,7 +10,7 @@ import java.util.List;
 public interface DiscussionRepository extends JpaRepository<Discussion,Integer> {
 
 
-    List<Discussion> findAllByCourseModuleAndParentMessageId
-            (CourseModule courseModule, Integer parentMessageId);
+    List<Discussion> findAllByCourseModuleIdAndParentMessage
+            (int courseModuleId, Discussion parentMessage);
 
 }
