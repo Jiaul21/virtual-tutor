@@ -2,8 +2,10 @@ package com.jiaul.virtualtutor.entities.discussion;
 
 import com.jiaul.virtualtutor.entities.discussion.dto.DiscussionDto;
 import com.jiaul.virtualtutor.entities.student.Student;
+import com.jiaul.virtualtutor.entities.student.StudentRepository;
 import com.jiaul.virtualtutor.entities.student.StudentService;
 import com.jiaul.virtualtutor.entities.teacher.Teacher;
+import com.jiaul.virtualtutor.entities.teacher.TeacherRepository;
 import com.jiaul.virtualtutor.entities.teacher.TeacherService;
 import com.jiaul.virtualtutor.enums.RoleEnum;
 import com.jiaul.virtualtutor.fileserver.FileService;
@@ -20,9 +22,9 @@ public class DiscussionService {
     @Autowired
     private DiscussionRepository discussionRepository;
     @Autowired
-    private StudentService studentService;
+    private StudentRepository studentRepository;
     @Autowired
-    private TeacherService teacherService;
+    private TeacherRepository teacherRepository;
     @Autowired
     private FileService fileService;
 
@@ -55,10 +57,10 @@ public class DiscussionService {
         discussion.setCourseModuleId(discussionDto.getCourseModuleId());
 
         if (discussionDto.getSenderRole().equals(RoleEnum.STUDENT.toString())) {
-            discussion.setStudent(studentService.getStudentById(discussionDto.getSenderId()));
+            discussion.setStudent(studentRepository.findById(discussionDto.getSenderId()).orElseThrow());
         }
         else if (discussionDto.getSenderRole().equals(RoleEnum.TEACHER.toString())) {
-            discussion.setTeacher(teacherService.getTeacherById(discussionDto.getSenderId()));
+            discussion.setTeacher(teacherRepository.findById(discussionDto.getSenderId()).orElseThrow());
         }
         if (discussionDto.getParentMessageId() != 0) {
             Discussion parentDiscussion = new Discussion();
