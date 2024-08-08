@@ -35,7 +35,7 @@ public class Course {
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
     private List<CourseModule> courseModules;
 
-    @ManyToMany(mappedBy = "buyCourses")
+    @ManyToMany(mappedBy = "buyCourses", cascade = CascadeType.ALL)
     private List<Student> courseStudents;
 
     @ManyToOne

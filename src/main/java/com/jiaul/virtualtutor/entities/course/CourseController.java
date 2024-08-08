@@ -41,8 +41,8 @@ public class CourseController {
         return ResponseEntity.ok(courseService.getCourseByType(type));
     }
 
-    @GetMapping("/get/{category}")
-    public ResponseEntity<List<CourseResponse>> getCourseByCategory(@PathVariable String category) {
+    @GetMapping("/get-category")
+    public ResponseEntity<List<CourseResponse>> getCourseByCategory(@RequestParam(value = "category") String category) {
         return ResponseEntity.ok(courseService.getCourseByCategory(category));
     }
 

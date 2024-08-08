@@ -4,6 +4,8 @@ package com.jiaul.virtualtutor.entities.course;
 import com.jiaul.virtualtutor.entities.course.dto.CourseRequest;
 import com.jiaul.virtualtutor.entities.course.dto.CourseResponse;
 import com.jiaul.virtualtutor.entities.student.Student;
+import com.jiaul.virtualtutor.entities.student.StudentRepository;
+import com.jiaul.virtualtutor.entities.student.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,8 @@ public class CourseService {
 
     @Autowired
     private CourseRepository courseRepository;
+    @Autowired
+    private StudentRepository studentRepository;
 
     /*
     creating course with list of courseModule
@@ -40,6 +44,13 @@ public class CourseService {
 
     public Course buyCourse(int courseId, int studentId) {
         Course course = getCourseByID(courseId);
+
+        Student student=studentRepository.findById(studentId).orElseThrow();
+        List<Course> courses=new ArrayList<>();
+        courses=student.getBuyCourses();
+        courses.add(course);
+        student.setBuyCourses(courses);
+        student=studentRepository.save(student);
         return course;
     }
 
