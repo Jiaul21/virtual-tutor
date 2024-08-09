@@ -46,4 +46,9 @@ public class CourseController {
         return ResponseEntity.ok(courseService.getCourseByCategory(category));
     }
 
+    @GetMapping("/get-all/{sid}")
+    public ResponseEntity<List<CourseResponse>> getAllCourseByStudentId(@PathVariable int sid){
+        return ResponseEntity.ok(courseService.getAllCourseByStudentId(sid));
+    }
+
 }

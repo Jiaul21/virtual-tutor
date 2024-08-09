@@ -14,6 +14,7 @@ public class EmailSender {
     private JavaMailSender javaMailSender;
 
     public boolean sendEmail(String toEmail, String subject, String body){
+        if(toEmail.isEmpty() || body.isEmpty()) return false;
         try{
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
@@ -22,7 +23,7 @@ public class EmailSender {
             helper.setFrom("studysupport@gmail.com");
             helper.setSubject(subject);
             helper.setText(body, true);  // true indicates the content is HTML
-            javaMailSender.send(message);
+//            javaMailSender.send(message);
         }catch (MessagingException e){
             System.out.println("error message: "+e.getMessage());
             return false;

@@ -5,7 +5,6 @@ import com.jiaul.virtualtutor.entities.course.dto.CourseRequest;
 import com.jiaul.virtualtutor.entities.course.dto.CourseResponse;
 import com.jiaul.virtualtutor.entities.student.Student;
 import com.jiaul.virtualtutor.entities.student.StudentRepository;
-import com.jiaul.virtualtutor.entities.student.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,12 +44,12 @@ public class CourseService {
     public Course buyCourse(int courseId, int studentId) {
         Course course = getCourseByID(courseId);
 
-        Student student=studentRepository.findById(studentId).orElseThrow();
-        List<Course> courses=new ArrayList<>();
-        courses=student.getBuyCourses();
+        Student student = studentRepository.findById(studentId).orElseThrow();
+        List<Course> courses = new ArrayList<>();
+        courses = student.getBuyCourses();
         courses.add(course);
         student.setBuyCourses(courses);
-        student=studentRepository.save(student);
+        student = studentRepository.save(student);
         return course;
     }
 
@@ -66,9 +65,11 @@ public class CourseService {
         return courseRepository.findByType(type);
     }
 
-    public List<Course> getAllCourse(){ return courseRepository.findAll(); }
+    public List<Course> getAllCourse() {
+        return courseRepository.findAll();
+    }
 
-    public int countTotalCoursesByCategory(String category){
+    public int countTotalCoursesByCategory(String category) {
         return (int) courseRepository.countByCategory(category);
     }
 
@@ -76,36 +77,57 @@ public class CourseService {
         System.out.println("category: " + category);
 
         List<CourseResponse> courseResponses = new ArrayList<>();
+
         courseRepository.findByCategory(category).forEach(course -> {
             if (course.isActive() && course.getPublishingDateTime().before(new Date())) {
                 CourseResponse courseResponse = new CourseResponse();
-                courseResponse.setId(course.getId());
-                courseResponse.setTitle(course.getTitle());
-                courseResponse.setImage(course.getImage());
-                courseResponse.setType(course.getType());
-                courseResponse.setCategory(course.getCategory());
-                courseResponse.setDuration(course.getDuration());
-                courseResponse.setDescription(course.getDescription());
-                courseResponse.setRating(course.getRating());
-                courseResponse.setPrice(course.getPrice());
-                courseResponse.setOffer(course.getOffer());
-                courseResponse.setPublishingDateTime(course.getPublishingDateTime());
-                courseResponse.setActive(course.isActive());
-
-                List<Student> students = new ArrayList<>();
-                course.getCourseStudents().forEach(student -> {
-                    Student student1 = new Student();
-                    student1.setId(student.getId());
-                    students.add(student1);
-                });
-                courseResponse.setCourseStudents(students);
-                courseResponse.setCourseTeacher(course.getCourseTeacher().getId());
-
+                courseResponse=toCourseResponse(course);
                 courseResponses.add(courseResponse);
             }
         });
         return courseResponses;
     }
 
+    public List<CourseResponse> getAllCourseByStudentId(int id) {
+        Student student = new Student();
+        student.setId(id);
+
+        List<CourseResponse> courseResponses = new ArrayList<>();
+        courseRepository.findByCourseStudents(student).forEach(course -> {
+            if (course.isActive() && course.getPublishingDateTime().before(new Date())) {
+                CourseResponse courseResponse = new CourseResponse();
+                courseResponse=toCourseResponse(course);
+                courseResponses.add(courseResponse);
+            }
+        });
+        return courseResponses;
+    }
+
+    public CourseResponse toCourseResponse(Course course) {
+        CourseResponse courseResponse = new CourseResponse();
+        courseResponse.setId(course.getId());
+        courseResponse.setTitle(course.getTitle());
+        courseResponse.setImage(course.getImage());
+        courseResponse.setType(course.getType());
+        courseResponse.setCategory(course.getCategory());
+        courseResponse.setDuration(course.getDuration());
+        courseResponse.setDescription(course.getDescription());
+        courseResponse.setRating(course.getRating());
+        courseResponse.setPrice(course.getPrice());
+        courseResponse.setOffer(course.getOffer());
+        courseResponse.setPublishingDateTime(course.getPublishingDateTime());
+        courseResponse.setActive(course.isActive());
+
+        List<Student> students = new ArrayList<>();
+        course.getCourseStudents().forEach(student -> {
+            Student student1 = new Student();
+            student1.setId(student.getId());
+            students.add(student1);
+        });
+        courseResponse.setCourseStudents(students);
+        courseResponse.setCourseTeacher(course.getCourseTeacher().getId());
+
+        return courseResponse;
+    }
 
 }

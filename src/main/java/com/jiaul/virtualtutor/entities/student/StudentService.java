@@ -20,7 +20,15 @@ public class StudentService {
     }
 
     public Student updateStudent(Student student){
-        return studentRepository.save(student);
+        String photo=fileService.storeBase64(student.getPhoto());
+        student=getStudentById(student.getId());
+        student.setPhoto(photo);
+        student= studentRepository.save(student);
+
+        student.setBuyCourses(null);
+        student.setUserCredential(null);
+        student.setPhoto(fileService.getBase64(student.getPhoto()));
+        return student;
     }
 
     public Student getStudentById(int id){
