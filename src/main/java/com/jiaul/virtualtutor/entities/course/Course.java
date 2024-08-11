@@ -38,9 +38,9 @@ public class Course {
     @ManyToMany(mappedBy = "buyCourses", cascade = CascadeType.ALL)
     private List<Student> courseStudents;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Teacher courseTeacher;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Meeting meeting;
 }

@@ -34,7 +34,8 @@ public class CourseService {
         course.setDescription(courseRequest.getDescription());
         course.setPrice(courseRequest.getPrice());
         course.setOffer(courseRequest.getOffer());
-        course.setPublishingDateTime(courseRequest.getPublishingDateTime());
+        if(courseRequest.getPublishingDateTime()!=null) course.setPublishingDateTime(courseRequest.getPublishingDateTime());
+        else course.setPublishingDateTime(new Date());
         course.setActive(true);
         course.setCourseTeacher(courseRequest.getCourseTeacher());
 
@@ -138,7 +139,16 @@ public class CourseService {
     }
 
     public boolean deleteCourse(int id){
-        courseRepository.deleteById(id);
+        if (courseRepository.existsById(id)) {
+            Course course = courseRepository.findById(id).orElse(null);
+            if (course != null) {
+                for (Student student : course.getCourseStudents()) {
+                    student.getBuyCourses().remove(course);
+                }
+                courseRepository.deleteById(id);
+                return true;
+            }
+        }
         return true;
     }
 

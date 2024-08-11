@@ -50,6 +50,7 @@ public class StudentService {
     public Student setStudentStatus(int studentId, boolean status){
         Student student=studentRepository.findById(studentId).orElseThrow();
         student.setActive(status);
+        student=studentRepository.save(student);
         return student;
     }
 }

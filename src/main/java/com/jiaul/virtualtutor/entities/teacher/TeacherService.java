@@ -71,6 +71,7 @@ public class TeacherService {
     public Teacher setTeacherStatus(int teacherId, boolean status){
         Teacher teacher=teacherRepository.findById(teacherId).orElseThrow();
         teacher.setActive(status);
+        teacher=teacherRepository.save(teacher);
         return teacher;
     }
 
