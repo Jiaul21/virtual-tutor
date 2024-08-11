@@ -50,8 +50,13 @@ public class AuthService {
             UserCredential userCredential = (UserCredential) authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())).getPrincipal();
 
-            JwtToken newJwtToken = new JwtToken();
+            if(userCredential.getRole().equals(RoleEnum.STUDENT.toString()) && !userCredential.getStudent().isActive() ||
+                    userCredential.getRole().equals(RoleEnum.TEACHER.toString()) && !userCredential.getTeacher().isActive()){
+                authResponse.setMessage("Block User");
+                return authResponse;
+            }
 
+            JwtToken newJwtToken = new JwtToken();
             if (userCredential.getJwtToken() == null) {     // first login try after SignUp
                 newJwtToken = jwtTokenService.createJwtTokenByUserCredential(userCredential);
                 userCredential.setJwtToken(newJwtToken);

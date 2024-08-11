@@ -3,6 +3,7 @@ package com.jiaul.virtualtutor.entities.course;
 
 import com.jiaul.virtualtutor.entities.course.dto.CourseRequest;
 import com.jiaul.virtualtutor.entities.course.dto.CourseResponse;
+import com.jiaul.virtualtutor.entities.module.CourseModule;
 import com.jiaul.virtualtutor.entities.student.Student;
 import com.jiaul.virtualtutor.entities.student.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -141,15 +142,35 @@ public class CourseService {
     public boolean deleteCourse(int id){
         if (courseRepository.existsById(id)) {
             Course course = courseRepository.findById(id).orElse(null);
+
             if (course != null) {
-                for (Student student : course.getCourseStudents()) {
-                    student.getBuyCourses().remove(course);
+                if (course.getCourseStudents() != null) {
+                    for (Student student : course.getCourseStudents()) {
+                        student.getBuyCourses().remove(course);
+                    }
+                    course.getCourseStudents().clear();
                 }
+
+                if (course.getCourseModules() != null) {
+                    for (CourseModule module : course.getCourseModules()) {
+                        module.setCourse(null);
+                    }
+                    course.getCourseModules().clear();
+                }
+
+                if (course.getCourseTeacher() != null) {
+                    course.setCourseTeacher(null);
+                }
+
+                if (course.getMeeting() != null) {
+                    course.setMeeting(null);
+                }
+
                 courseRepository.deleteById(id);
                 return true;
             }
         }
-        return true;
+        return false;
     }
 
 }
