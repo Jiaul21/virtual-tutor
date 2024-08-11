@@ -23,7 +23,7 @@ public class EmailSender {
             helper.setFrom("studysupport@gmail.com");
             helper.setSubject(subject);
             helper.setText(body, true);  // true indicates the content is HTML
-//            javaMailSender.send(message);
+            javaMailSender.send(message);
         }catch (MessagingException e){
             System.out.println("error message: "+e.getMessage());
             return false;

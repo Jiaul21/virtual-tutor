@@ -52,8 +52,8 @@ public class CourseModuleService {
         courseModule.setActive(true);
 
         Course course = courseService.getCourseByID(courseModuleRequest.getCourse().getId());
-        if (course.getCourseModules().isEmpty()) course.setActive(true);
-        course = courseService.updateCourse(course);
+//        if (course.getCourseModules().isEmpty()) course.setActive(true);
+//        course = courseService.updateCourse(course);
 
         courseModule.setCourse(course);
         courseModule = courseModuleRepository.save(courseModule);

@@ -1,6 +1,7 @@
 package com.jiaul.virtualtutor.entities.teacher;
 
 import com.jiaul.virtualtutor.entities.course.Course;
+import com.jiaul.virtualtutor.entities.course.CourseService;
 import com.jiaul.virtualtutor.entities.course.dto.CourseResponse;
 import com.jiaul.virtualtutor.entities.teacher.dto.TeacherDto;
 import com.jiaul.virtualtutor.fileserver.FileService;
@@ -19,6 +20,8 @@ public class TeacherService {
 
     @Autowired
     private FileService fileService;
+    @Autowired
+    private CourseService courseService;
 
     public Teacher createTeacher(Teacher teacher) {
         return teacherRepository.save(teacher);
@@ -58,26 +61,17 @@ public class TeacherService {
 
         teacher.getSellCourses().forEach(course -> {
             CourseResponse c=new CourseResponse();
-            c.setId(course.getId());
-            c.setTitle(course.getTitle());
-            c.setImage(course.getImage());
-            c.setType(course.getType());
-            c.setCategory(course.getCategory());
-            c.setDuration(course.getDuration());
-            c.setDescription(course.getDescription());
-            c.setRating(course.getRating());
-            c.setPrice(course.getPrice());
-            c.setOffer(course.getOffer());
-            c.setPublishingDateTime(course.getPublishingDateTime());
-            c.setActive(course.isActive());
-            c.setCourseModules(course.getCourseModules());
-            c.setCourseStudents(course.getCourseStudents());
-            c.setCourseTeacher(teacher.getId());
-
+            c=courseService.toCourseResponse(course);
             courseResponses.add(c);
         });
 
         return courseResponses;
+    }
+
+    public Teacher setTeacherStatus(int teacherId, boolean status){
+        Teacher teacher=teacherRepository.findById(teacherId).orElseThrow();
+        teacher.setActive(status);
+        return teacher;
     }
 
     public List<Teacher> getAllTeacher(){
@@ -88,10 +82,6 @@ public class TeacherService {
         return (int) teacherRepository.count();
     }
 
-//    public byte[] updateProfilePhoto(MultipartFile file,int id) throws IOException {
-//        Teacher teacher= teacherRepository.findById(id).orElseThrow();
-//        teacher.setPhoto(file.getBytes());
-//        return teacherRepository.save(teacher).getPhoto();
-//    }
+
 
 }

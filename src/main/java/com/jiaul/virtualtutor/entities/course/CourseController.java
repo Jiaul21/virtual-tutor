@@ -51,4 +51,15 @@ public class CourseController {
         return ResponseEntity.ok(courseService.getAllCourseByStudentId(sid));
     }
 
+    @PatchMapping("/set-status")
+    public ResponseEntity<CourseResponse> setCourseStatus(@RequestParam(value = "courseId") int courseId,
+                                                  @RequestParam(value = "status") boolean status){
+        return ResponseEntity.ok(courseService.setCourseActiveStatus(courseId,status));
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Boolean> deleteCourseById(@PathVariable int id){
+        return ResponseEntity.ok(courseService.deleteCourse(id));
+    }
+
 }

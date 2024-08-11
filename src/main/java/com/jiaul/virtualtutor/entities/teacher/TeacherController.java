@@ -39,6 +39,12 @@ public class TeacherController {
         return ResponseEntity.ok(teacherService.getTeacherAllCourse(id));
     }
 
+    @PatchMapping("/set-status")
+    public ResponseEntity<Teacher> setTeacherStatus(@RequestParam(value = "teacherId") int teacherId,
+                                                          @RequestParam(value = "status") boolean status){
+        return ResponseEntity.ok(teacherService.setTeacherStatus(teacherId,status));
+    }
+
 //    @PatchMapping("/update/profile-photo/{id}")
 //    public ResponseEntity<byte[]> updateProfilePhoto(@RequestParam("image") MultipartFile file, int id) throws IOException {
 //        return ResponseEntity.ok(teacherService.updateProfilePhoto(file,id));

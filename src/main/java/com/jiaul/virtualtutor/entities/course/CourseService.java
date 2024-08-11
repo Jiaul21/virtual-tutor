@@ -35,7 +35,7 @@ public class CourseService {
         course.setPrice(courseRequest.getPrice());
         course.setOffer(courseRequest.getOffer());
         course.setPublishingDateTime(courseRequest.getPublishingDateTime());
-        course.setActive(false);
+        course.setActive(true);
         course.setCourseTeacher(courseRequest.getCourseTeacher());
 
         return courseRepository.save(course);
@@ -71,6 +71,13 @@ public class CourseService {
 
     public int countTotalCoursesByCategory(String category) {
         return (int) courseRepository.countByCategory(category);
+    }
+
+    public CourseResponse  setCourseActiveStatus(int courseId, boolean status){
+        Course course= courseRepository.findById(courseId).orElseThrow();
+        course.setActive(status);
+        course=courseRepository.save(course);
+        return toCourseResponse(course);
     }
 
     public List<CourseResponse> getCourseByCategory(String category) {
@@ -128,6 +135,11 @@ public class CourseService {
         courseResponse.setCourseTeacher(course.getCourseTeacher().getId());
 
         return courseResponse;
+    }
+
+    public boolean deleteCourse(int id){
+        courseRepository.deleteById(id);
+        return true;
     }
 
 }

@@ -1,5 +1,6 @@
 package com.jiaul.virtualtutor.entities.student;
 
+import com.jiaul.virtualtutor.entities.teacher.Teacher;
 import com.jiaul.virtualtutor.fileserver.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,5 +45,11 @@ public class StudentService {
 
     public int countTotalStudents(){
         return (int) studentRepository.count();
+    }
+
+    public Student setStudentStatus(int studentId, boolean status){
+        Student student=studentRepository.findById(studentId).orElseThrow();
+        student.setActive(status);
+        return student;
     }
 }

@@ -1,5 +1,6 @@
 package com.jiaul.virtualtutor.entities.student;
 
+import com.jiaul.virtualtutor.entities.teacher.Teacher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,5 +27,10 @@ public class StudentController {
     @GetMapping("/get/{id}")
     public ResponseEntity<Student> getStudentById(@PathVariable int id){
         return ResponseEntity.ok(studentService.getStudentById(id));
+    }
+    @PatchMapping("/set-status")
+    public ResponseEntity<Student> setStudentStatus(@RequestParam(value = "studentId") int studentId,
+                                                   @RequestParam(value = "status") boolean status){
+        return ResponseEntity.ok(studentService.setStudentStatus(studentId,status));
     }
 }
