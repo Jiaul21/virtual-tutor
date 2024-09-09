@@ -38,7 +38,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             return;
         }
         tokenValue = authHeader.substring(7);
-
         if(jwtService.isTokenExpired(tokenValue)) {
             response.setStatus(403);
             filterChain.doFilter(request, response);
